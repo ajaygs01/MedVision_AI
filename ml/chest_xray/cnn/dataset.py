@@ -64,10 +64,13 @@ def read_dicom_or_image(file_path: Union[str, Path]) -> Image.Image:
         return img.convert("RGB")
 
 
-def get_transforms(img_size: Tuple[int, int] = (224, 224), is_train: bool = True):
+def get_transforms(img_size: Tuple[int, int] = (224, 224), is_train: bool = True, **kwargs):
     """
     Standard torchvision transform pipeline for ResNet-50.
     """
+    if "is_training" in kwargs:
+        is_train = kwargs["is_training"]
+
     if transforms is None:
         return None
 
@@ -157,6 +160,9 @@ def load_and_split_rsna_metadata(
     Returns (train_df, val_df, test_df, pos_weight).
     """
     from sklearn.model_selection import train_test_split
+
+    if hasattr(labels_csv_path, "labels_csv_path"):
+        labels_csv_path = labels_csv_path.labels_csv_path
 
     df = pd.read_csv(labels_csv_path)
 
