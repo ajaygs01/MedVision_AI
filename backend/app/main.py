@@ -1,0 +1,58 @@
+from contextlib import asynccontextmanager
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from app.api.endpoints import health, models
+from app.core.config import get_settings
+from app.db.mongodb import close_mongo_connection
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup actions
+    settings = get_settings()
+    print(f"[MediVision AI] Starting Stage 1 Backend on {settings.host}:{settings.port}")
+    yield
+    # Shutdown actions
+    await close_mongo_connection()
+    print("[MediVision AI] Backend shut down cleanly.")
+
+
+def create_application() -> FastAPI:
+    settings = get_settings()
+
+    app = FastAPI(
+        title=settings.project_name,
+        version=settings.version,
+        description="MediVision AI Research Platform - Stage 1 Foundation API",
+        lifespan=lifespan,
+    )
+
+    # CORS configuration
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=settings.get_cors_origins(),
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+
+    # API Routers
+    app.include_router(health.router, prefix=settings.api_v1_prefix)
+    app.include_router(models.router, prefix=settings.api_v1_prefix)
+
+    @app.get("/")
+    async def root():
+        return {
+            "name": settings.project_name,
+            "version": settings.version,
+            "stage": 1,
+            "status": "online",
+            "docs_url": "/docs",
+            "health_endpoint": f"{settings.api_v1_prefix}/health",
+            "models_endpoint": f"{settings.api_v1_prefix}/models/status",
+        }
+
+    return app
+
+
+app = create_application()
