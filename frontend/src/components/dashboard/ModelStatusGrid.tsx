@@ -39,19 +39,19 @@ export const ModelStatusGrid: React.FC<ModelStatusGridProps> = ({
     <div className="space-y-4">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
         <div>
-          <h3 className="text-base font-semibold text-white tracking-tight flex items-center gap-2">
-            <Layers className="h-4 w-4 text-teal-400" />
-            AI Research Pipelines & Model Configurations
+          <h3 className="text-base font-bold text-[#1E161C] tracking-tight flex items-center gap-2">
+            <Layers className="h-5 w-5 text-[#890149]" />
+            AI Research Pipelines & Architecture Status
           </h3>
-          <p className="text-xs text-slate-400">
-            Real-time synchronization with FastAPI endpoint <code className="text-teal-300">/api/models/status</code>
+          <p className="text-xs text-[#5C4E57]">
+            Real-time status synced with FastAPI endpoint <code className="text-[#890149] font-semibold">/api/models/status</code>
           </p>
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-[11px] text-amber-300 bg-amber-950/60 border border-amber-500/30 px-2.5 py-1 rounded-md flex items-center gap-1.5 font-medium">
-            <ShieldAlert className="h-3.5 w-3.5 text-amber-400" />
-            All Weights Unloaded (Stage 1)
+          <span className="text-[11px] text-[#890149] bg-[#890149]/10 border border-[#890149]/25 px-3 py-1 rounded-full flex items-center gap-1.5 font-bold">
+            <ShieldAlert className="h-3.5 w-3.5 text-[#890149]" />
+            Weights Integrity Guard Active
           </span>
         </div>
       </div>
@@ -64,20 +64,20 @@ export const ModelStatusGrid: React.FC<ModelStatusGridProps> = ({
           return (
             <div
               key={key}
-              className="rounded-xl border border-slate-800 bg-[#0C1430]/70 p-4 flex flex-col justify-between hover:border-teal-500/40 transition-all hover:bg-[#0F1A3D]/70 group"
+              className="rounded-2xl border border-[#E5E5D8] bg-white/95 p-5 flex flex-col justify-between hover:border-[#890149]/50 hover:shadow-md transition-all group"
             >
               <div>
                 {/* Header: Icon, Name, and Status */}
                 <div className="flex items-start justify-between gap-2">
-                  <div className="flex items-center gap-2.5">
-                    <div className="p-2 rounded-lg bg-teal-500/10 text-teal-400 border border-teal-500/20 group-hover:bg-teal-500/20 transition-colors">
-                      <IconComponent className="h-4 w-4" />
+                  <div className="flex items-center gap-3">
+                    <div className="p-2.5 rounded-xl bg-[#890149]/10 text-[#890149] border border-[#890149]/20 group-hover:bg-[#890149] group-hover:text-[#F3F3E7] transition-all">
+                      <IconComponent className="h-5 w-5" />
                     </div>
                     <div>
-                      <h4 className="text-sm font-semibold text-slate-100 group-hover:text-teal-200 transition-colors">
+                      <h4 className="text-sm font-bold text-[#1E161C] group-hover:text-[#890149] transition-colors">
                         {model.name}
                       </h4>
-                      <p className="text-[11px] text-teal-300/80 font-medium">{model.modality}</p>
+                      <p className="text-[11px] text-[#890149] font-medium">{model.modality}</p>
                     </div>
                   </div>
 
@@ -85,33 +85,33 @@ export const ModelStatusGrid: React.FC<ModelStatusGridProps> = ({
                 </div>
 
                 {/* Description */}
-                <p className="mt-3 text-xs text-slate-300 leading-relaxed line-clamp-2">
+                <p className="mt-3 text-xs text-[#5C4E57] leading-relaxed line-clamp-2">
                   {model.description}
                 </p>
 
                 {/* Technical Specs Tags */}
-                <div className="mt-3.5 space-y-1.5 border-t border-slate-800/80 pt-3 text-[11px]">
-                  <div className="flex items-center justify-between text-slate-400">
-                    <span className="text-slate-400">Training State:</span>
-                    <span className="text-amber-400 font-bold font-mono text-[10px]">
-                      NOT TRAINED (Weights Unloaded)
+                <div className="mt-4 space-y-1.5 border-t border-[#F0F0E4] pt-3 text-[11px]">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[#7A6B74]">Training State:</span>
+                    <span className="text-amber-700 font-bold font-mono text-[10px]">
+                      NOT TRAINED (Weights Pending)
                     </span>
                   </div>
-                  <div className="flex items-center justify-between text-slate-400">
-                    <span className="text-slate-400">Architecture:</span>
-                    <span className="text-slate-200 font-mono text-[10px] truncate max-w-[170px]" title={model.architecture}>
+                  <div className="flex items-center justify-between">
+                    <span className="text-[#7A6B74]">Architecture:</span>
+                    <span className="text-[#1E161C] font-mono text-[10px] truncate max-w-[170px]" title={model.architecture}>
                       {model.architecture}
                     </span>
                   </div>
 
-                  <div className="flex items-center justify-between text-slate-400">
-                    <span className="text-slate-400">Framework:</span>
-                    <span className="text-teal-300 font-mono text-[10px]">{model.framework}</span>
+                  <div className="flex items-center justify-between">
+                    <span className="text-[#7A6B74]">Framework:</span>
+                    <span className="text-[#890149] font-mono text-[10px] font-semibold">{model.framework}</span>
                   </div>
 
-                  <div className="flex items-center justify-between text-slate-400">
-                    <span className="text-slate-400">Next Milestone:</span>
-                    <span className="text-amber-300 text-[10px] truncate max-w-[170px]" title={model.next_stage}>
+                  <div className="flex items-center justify-between">
+                    <span className="text-[#7A6B74]">Next Milestone:</span>
+                    <span className="text-[#5C4E57] text-[10px] truncate max-w-[170px]" title={model.next_stage}>
                       {model.next_stage}
                     </span>
                   </div>
@@ -121,9 +121,9 @@ export const ModelStatusGrid: React.FC<ModelStatusGridProps> = ({
               {/* Action Button */}
               <button
                 onClick={() => onNavigateToWorkbench(mapping.tab)}
-                className="mt-4 w-full py-2 px-3 rounded-lg bg-slate-900 hover:bg-teal-600/20 border border-slate-800 hover:border-teal-500/40 text-xs font-medium text-slate-300 hover:text-teal-200 flex items-center justify-center gap-1.5 transition-all"
+                className="mt-4 w-full py-2 px-3 rounded-xl bg-[#F3F3E7] hover:bg-[#890149] hover:text-[#F3F3E7] border border-[#E5E5D8] hover:border-[#890149] text-xs font-bold text-[#1E161C] flex items-center justify-center gap-1.5 transition-all shadow-xs"
               >
-                <span>View Stage 2 Blueprint</span>
+                <span>Open Research Workbench</span>
                 <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
               </button>
             </div>

@@ -242,24 +242,24 @@ export const ModuleWorkbench: React.FC<ModuleWorkbenchProps> = ({
   return (
     <div className="space-y-6">
       {/* Top Banner: Module Title & Safeguard */}
-      <div className="rounded-xl border border-slate-800 bg-[#0C1430]/80 p-6 backdrop-blur-sm">
+      <div className="rounded-2xl border border-[#E5E5D8] bg-white/95 p-6 backdrop-blur-sm shadow-sm">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-start gap-4">
-            <div className="p-3 rounded-xl bg-teal-500/10 text-teal-400 border border-teal-500/20 shrink-0">
+            <div className="p-3.5 rounded-2xl bg-[#890149]/10 text-[#890149] border border-[#890149]/20 shrink-0">
               <Icon className="h-7 w-7" />
             </div>
             <div>
               <div className="flex items-center gap-2.5 flex-wrap">
-                <h2 className="text-xl font-bold text-white tracking-tight">{config.title}</h2>
+                <h2 className="text-xl font-black text-[#1E161C] tracking-tight">{config.title}</h2>
                 <StatusBadge status="untrained" label={config.stageBadge} />
               </div>
-              <p className="mt-1 text-xs text-slate-300 max-w-2xl">{config.subtitle}</p>
+              <p className="mt-1 text-xs text-[#5C4E57] max-w-2xl">{config.subtitle}</p>
             </div>
           </div>
 
           <button
             onClick={onBackToDashboard}
-            className="self-start md:self-center px-4 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-xs font-semibold text-slate-200 border border-slate-800 transition-colors"
+            className="self-start md:self-center px-4 py-2.5 rounded-xl bg-[#F3F3E7] hover:bg-[#890149] hover:text-[#F3F3E7] text-xs font-bold text-[#1E161C] border border-[#E5E5D8] transition-all shadow-xs"
           >
             ← Return to Dashboard
           </button>
@@ -267,15 +267,15 @@ export const ModuleWorkbench: React.FC<ModuleWorkbenchProps> = ({
       </div>
 
       {/* Untrained Model Sandbox Notice */}
-      <div className="rounded-xl border border-amber-500/30 bg-amber-950/20 p-5">
+      <div className="rounded-2xl border border-amber-300 bg-amber-50/90 p-5 shadow-xs">
         <div className="flex items-start gap-3">
-          <AlertTriangle className="h-5 w-5 text-amber-400 shrink-0 mt-0.5" />
+          <AlertTriangle className="h-5 w-5 text-amber-600 shrink-0 mt-0.5" />
           <div className="flex-1">
-            <h4 className="text-sm font-semibold text-amber-200">
-              Stage 1 Architecture Blueprint: Execution Locked
+            <h4 className="text-sm font-bold text-amber-900">
+              Research Blueprint: Execution Locked Until Model Training
             </h4>
-            <p className="mt-1 text-xs text-amber-300/80 leading-relaxed">
-              In strict accordance with project boundaries, no mock predictions or fake inferences are permitted. This module blueprint outlines the exact deep learning architecture, dataset targets, input specifications, and loss formulations designed for Stage 2 & 3 implementation.
+            <p className="mt-1 text-xs text-amber-800 leading-relaxed">
+              In strict accordance with project boundaries, no mock predictions or fake inferences are permitted. This module blueprint outlines the deep learning architecture, dataset targets, input specifications, and loss formulations designed for implementation.
             </p>
           </div>
         </div>
@@ -284,79 +284,79 @@ export const ModuleWorkbench: React.FC<ModuleWorkbenchProps> = ({
       {/* Two Column Grid: Technical Specifications & Pipeline Architecture */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Column 1: Technical Specifications */}
-        <div className="rounded-xl border border-slate-800 bg-[#0C1430]/70 p-5 space-y-4">
-          <div className="flex items-center gap-2 pb-3 border-b border-slate-800">
-            <Cpu className="h-4 w-4 text-teal-400" />
-            <h3 className="text-sm font-semibold text-white tracking-tight">
+        <div className="rounded-2xl border border-[#E5E5D8] bg-white/95 p-6 space-y-4 shadow-sm">
+          <div className="flex items-center gap-2 pb-3 border-b border-[#F0F0E4]">
+            <Cpu className="h-4 w-4 text-[#890149]" />
+            <h3 className="text-sm font-bold text-[#1E161C] tracking-tight">
               Planned Technical Specifications
             </h3>
           </div>
 
           <div className="space-y-3 text-xs">
-            <div className="p-3 rounded-lg bg-slate-900/60 border border-slate-800/80">
-              <span className="text-slate-400 font-medium block mb-1">Target Modality:</span>
-              <span className="text-slate-200 font-mono text-[11px]">{config.modality}</span>
+            <div className="p-3.5 rounded-xl bg-[#FAF9F5] border border-[#E5E5D8]">
+              <span className="text-[#7A6B74] font-medium block mb-1">Target Modality:</span>
+              <span className="text-[#1E161C] font-mono text-[11px] font-semibold">{config.modality}</span>
             </div>
 
-            <div className="p-3 rounded-lg bg-slate-900/60 border border-slate-800/80">
-              <span className="text-slate-400 font-medium block mb-1">Target Training Dataset:</span>
-              <span className="text-teal-300 font-mono text-[11px]">{config.dataset}</span>
+            <div className="p-3.5 rounded-xl bg-[#FAF9F5] border border-[#E5E5D8]">
+              <span className="text-[#7A6B74] font-medium block mb-1">Target Training Dataset:</span>
+              <span className="text-[#890149] font-mono text-[11px] font-bold">{config.dataset}</span>
             </div>
 
-            <div className="p-3 rounded-lg bg-slate-900/60 border border-slate-800/80">
-              <span className="text-slate-400 font-medium block mb-1">Backbone Architecture:</span>
-              <span className="text-slate-200 font-mono text-[11px]">{config.backbone}</span>
+            <div className="p-3.5 rounded-xl bg-[#FAF9F5] border border-[#E5E5D8]">
+              <span className="text-[#7A6B74] font-medium block mb-1">Backbone Architecture:</span>
+              <span className="text-[#1E161C] font-mono text-[11px] font-semibold">{config.backbone}</span>
             </div>
 
-            <div className="p-3 rounded-lg bg-slate-900/60 border border-slate-800/80">
-              <span className="text-slate-400 font-medium block mb-1">Framework:</span>
-              <span className="text-cyan-300 font-mono text-[11px]">{config.framework}</span>
+            <div className="p-3.5 rounded-xl bg-[#FAF9F5] border border-[#E5E5D8]">
+              <span className="text-[#7A6B74] font-medium block mb-1">Framework:</span>
+              <span className="text-[#890149] font-mono text-[11px] font-semibold">{config.framework}</span>
             </div>
 
-            <div className="p-3 rounded-lg bg-slate-900/60 border border-slate-800/80">
-              <span className="text-slate-400 font-medium block mb-1">Input Format Specification:</span>
-              <span className="text-slate-300 font-mono text-[11px]">{config.inputFormat}</span>
+            <div className="p-3.5 rounded-xl bg-[#FAF9F5] border border-[#E5E5D8]">
+              <span className="text-[#7A6B74] font-medium block mb-1">Input Format Specification:</span>
+              <span className="text-[#1E161C] font-mono text-[11px]">{config.inputFormat}</span>
             </div>
 
-            <div className="p-3 rounded-lg bg-slate-900/60 border border-slate-800/80">
-              <span className="text-slate-400 font-medium block mb-1">Loss Formulation:</span>
-              <span className="text-amber-300 font-mono text-[11px]">{config.lossFunction}</span>
+            <div className="p-3.5 rounded-xl bg-[#FAF9F5] border border-[#E5E5D8]">
+              <span className="text-[#7A6B74] font-medium block mb-1">Loss Formulation:</span>
+              <span className="text-amber-800 font-mono text-[11px] font-semibold">{config.lossFunction}</span>
             </div>
           </div>
         </div>
 
         {/* Column 2: Planned Pipeline Steps & Metrics */}
-        <div className="rounded-xl border border-slate-800 bg-[#0C1430]/70 p-5 space-y-4 flex flex-col justify-between">
+        <div className="rounded-2xl border border-[#E5E5D8] bg-white/95 p-6 space-y-4 flex flex-col justify-between shadow-sm">
           <div>
-            <div className="flex items-center gap-2 pb-3 border-b border-slate-800">
-              <Layers className="h-4 w-4 text-teal-400" />
-              <h3 className="text-sm font-semibold text-white tracking-tight">
+            <div className="flex items-center gap-2 pb-3 border-b border-[#F0F0E4]">
+              <Layers className="h-4 w-4 text-[#890149]" />
+              <h3 className="text-sm font-bold text-[#1E161C] tracking-tight">
                 Architectural Pipeline Flow
               </h3>
             </div>
 
             <div className="mt-4 space-y-3">
               {config.pipelineSteps.map((step, idx) => (
-                <div key={idx} className="p-3 rounded-lg bg-slate-900/60 border border-slate-800/80">
-                  <div className="flex items-center gap-2 text-teal-300 font-semibold text-xs mb-1">
-                    <CheckCircle className="h-3.5 w-3.5 text-teal-400 shrink-0" />
+                <div key={idx} className="p-3.5 rounded-xl bg-[#FAF9F5] border border-[#E5E5D8]">
+                  <div className="flex items-center gap-2 text-[#890149] font-bold text-xs mb-1">
+                    <CheckCircle className="h-3.5 w-3.5 text-[#890149] shrink-0" />
                     <span>{step.title}</span>
                   </div>
-                  <p className="text-[11px] text-slate-300 leading-relaxed pl-5.5">{step.desc}</p>
+                  <p className="text-[11px] text-[#5C4E57] leading-relaxed pl-5.5">{step.desc}</p>
                 </div>
               ))}
             </div>
 
             {/* Target Validation Metrics */}
-            <div className="mt-5 pt-4 border-t border-slate-800">
-              <h4 className="text-xs font-semibold text-slate-300 mb-2">
-                Planned Stage 2 Evaluation Metrics:
+            <div className="mt-5 pt-4 border-t border-[#F0F0E4]">
+              <h4 className="text-xs font-bold text-[#1E161C] mb-2">
+                Planned Evaluation Metrics:
               </h4>
               <div className="flex flex-wrap gap-2">
                 {config.targetMetrics.map((metric, i) => (
                   <span
                     key={i}
-                    className="px-2.5 py-1 rounded-md bg-teal-950/60 border border-teal-500/30 text-[11px] text-teal-200 font-mono"
+                    className="px-2.5 py-1 rounded-full bg-[#890149]/10 border border-[#890149]/20 text-[11px] text-[#890149] font-bold font-mono"
                   >
                     {metric}
                   </span>
@@ -366,17 +366,17 @@ export const ModuleWorkbench: React.FC<ModuleWorkbenchProps> = ({
           </div>
 
           {/* Inactive Upload Blueprint Box */}
-          <div className="mt-6 p-4 rounded-xl border border-dashed border-slate-700 bg-slate-900/40 text-center space-y-2">
-            <FileCode className="h-6 w-6 text-slate-400 mx-auto" />
-            <p className="text-xs font-medium text-slate-300">
-              Interactive Clinical Ingestion Sandbox (Stage 2)
+          <div className="mt-6 p-5 rounded-2xl border border-dashed border-[#D4D4C5] bg-[#FAF9F5] text-center space-y-2">
+            <FileCode className="h-6 w-6 text-[#890149] mx-auto" />
+            <p className="text-xs font-bold text-[#1E161C]">
+              Interactive Clinical Ingestion Sandbox
             </p>
-            <p className="text-[11px] text-slate-400 max-w-md mx-auto">
-              File upload handlers, DICOM viewer integration, and forward-pass prediction routes will be activated once datasets are mounted and models are trained.
+            <p className="text-[11px] text-[#5C4E57] max-w-md mx-auto">
+              File upload handlers, DICOM viewer integration, and forward-pass prediction routes will be activated once training pipelines for this modality are complete.
             </p>
             <div className="pt-2">
-              <span className="inline-block px-3 py-1.5 rounded-lg bg-amber-950/60 border border-amber-500/40 text-[10px] font-bold text-amber-300 uppercase tracking-wider">
-                MODEL NOT TRAINED • WEIGHTS UNLOADED
+              <span className="inline-block px-3 py-1 rounded-full bg-amber-50 border border-amber-300 text-[10px] font-bold text-amber-900 uppercase tracking-wider">
+                MODEL NOT TRAINED • WEIGHTS PENDING
               </span>
             </div>
           </div>

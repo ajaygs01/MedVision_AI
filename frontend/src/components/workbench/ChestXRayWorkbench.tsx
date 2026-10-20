@@ -114,25 +114,25 @@ export function ChestXRayWorkbench({
   return (
     <div className="space-y-6">
       {/* Top Header & Breadcrumb */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-slate-800">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-[#E5E5D8]">
         <div className="flex items-center gap-3">
           <button
             onClick={onBackToDashboard}
-            className="p-2 rounded-lg bg-slate-800/80 hover:bg-slate-700/80 text-slate-300 hover:text-white transition-colors"
+            className="p-2.5 rounded-xl bg-white border border-[#E5E5D8] hover:border-[#890149] text-[#1E161C] hover:text-[#890149] transition-all shadow-xs"
             title="Return to Dashboard"
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-xl md:text-2xl font-bold text-white tracking-tight">
+              <h1 className="text-xl md:text-2xl font-black text-[#1E161C] tracking-tight">
                 Chest X-ray CNN Classification Workbench
               </h1>
-              <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-teal-500/10 text-teal-400 border border-teal-500/20">
+              <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-[#890149]/10 text-[#890149] border border-[#890149]/25">
                 Stage 2
               </span>
             </div>
-            <p className="text-xs text-slate-400 mt-0.5">
+            <p className="text-xs text-[#5C4E57] mt-0.5">
               RSNA Pneumonia Detection Challenge • ResNet-50 ImageNet Transfer Learning Pipeline
             </p>
           </div>
@@ -141,13 +141,13 @@ export function ChestXRayWorkbench({
         {/* Real Status Badge from Model Registry */}
         <div className="flex items-center gap-2">
           {isModelTrained ? (
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-semibold">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-800 text-xs font-bold shadow-xs">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
               <span>WEIGHTS LOADED • ACTIVE</span>
             </div>
           ) : (
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-semibold">
-              <AlertTriangle className="w-4 h-4 text-amber-400 animate-pulse" />
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 text-xs font-bold shadow-xs">
+              <AlertTriangle className="w-4 h-4 text-amber-600 animate-pulse" />
               <span>NOT TRAINED • WEIGHTS PENDING</span>
             </div>
           )}
@@ -156,16 +156,16 @@ export function ChestXRayWorkbench({
 
       {/* Prominent Medical Integrity Warning Banner */}
       {!isModelTrained && (
-        <div className="p-4 rounded-xl bg-amber-950/20 border border-amber-500/30 text-amber-200/90 text-sm flex items-start gap-3 shadow-lg shadow-black/20">
-          <AlertTriangle className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
+        <div className="p-4 rounded-2xl bg-amber-50/90 border border-amber-300 text-amber-950 text-sm flex items-start gap-3 shadow-xs">
+          <AlertTriangle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
           <div className="space-y-1">
-            <h4 className="font-semibold text-amber-300 text-sm">
+            <h4 className="font-bold text-amber-900 text-sm">
               Model Status: NOT TRAINED — Clinical Diagnostic Integrity Safeguard
             </h4>
-            <p className="text-xs text-amber-200/80 leading-relaxed">
-              No trained weights file (<code className="bg-amber-950/40 px-1 py-0.5 rounded font-mono text-[11px] text-amber-200">model_artifacts/chest_xray_cnn/best_model.pth</code>) has been loaded into the inference engine.
+            <p className="text-xs text-amber-800 leading-relaxed">
+              No trained weights file (<code className="bg-amber-100 px-1.5 py-0.5 rounded font-mono text-[11px] text-amber-900">model_artifacts/chest_xray_cnn/best_model.pth</code>) has been loaded into the inference engine.
               In accordance with medical AI safety protocols, <strong>no fabricated confidence values or mock predictions are ever generated</strong>.
-              To train this model, download the RSNA Pneumonia Detection dataset into <code className="bg-amber-950/40 px-1 py-0.5 rounded font-mono text-[11px] text-amber-200">datasets/rsna_pneumonia/</code> and execute the training pipeline.
+              The RSNA dataset is now verified in <code className="bg-amber-100 px-1.5 py-0.5 rounded font-mono text-[11px] text-amber-900">datasets/rsna_pneumonia/</code>. Execute the training pipeline to generate active weights.
             </p>
           </div>
         </div>
@@ -175,13 +175,13 @@ export function ChestXRayWorkbench({
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Column: Image Ingestion & Preview (7 Cols) */}
         <div className="lg:col-span-7 space-y-4">
-          <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-5 space-y-4 backdrop-blur-sm">
+          <div className="bg-white/95 border border-[#E5E5D8] rounded-2xl p-6 space-y-4 shadow-sm backdrop-blur-sm">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-semibold text-white flex items-center gap-2">
-                <FileUp className="w-4 h-4 text-teal-400" />
+              <h3 className="text-sm font-bold text-[#1E161C] flex items-center gap-2">
+                <FileUp className="w-4 h-4 text-[#890149]" />
                 Radiograph Input Ingestion
               </h3>
-              <span className="text-[11px] text-slate-400">
+              <span className="text-[11px] text-[#5C4E57] font-medium">
                 Supports DICOM (.dcm), PNG, JPEG
               </span>
             </div>
@@ -192,10 +192,10 @@ export function ChestXRayWorkbench({
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}
               onClick={() => fileInputRef.current?.click()}
-              className={`border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition-all duration-200 flex flex-col items-center justify-center min-h-[220px] ${
+              className={`border-2 border-dashed rounded-2xl p-8 text-center cursor-pointer transition-all duration-200 flex flex-col items-center justify-center min-h-[220px] ${
                 isDragging
-                  ? 'border-teal-400 bg-teal-500/10'
-                  : 'border-slate-700/80 hover:border-slate-600 bg-slate-950/40'
+                  ? 'border-[#890149] bg-[#890149]/5'
+                  : 'border-[#D4D4C5] hover:border-[#890149] bg-[#FAF9F5]/70'
               }`}
             >
               <input
@@ -212,28 +212,28 @@ export function ChestXRayWorkbench({
 
               {selectedFile ? (
                 <div className="space-y-3 w-full max-w-md">
-                  <div className="w-12 h-12 rounded-full bg-teal-500/10 border border-teal-500/30 flex items-center justify-center mx-auto text-teal-400">
+                  <div className="w-12 h-12 rounded-2xl bg-[#890149]/10 border border-[#890149]/20 flex items-center justify-center mx-auto text-[#890149]">
                     {isDicom ? <FileText className="w-6 h-6" /> : <Upload className="w-6 h-6" />}
                   </div>
                   <div className="text-center">
-                    <p className="text-sm font-semibold text-white truncate">{selectedFile.name}</p>
-                    <p className="text-xs text-slate-400">
+                    <p className="text-sm font-bold text-[#1E161C] truncate">{selectedFile.name}</p>
+                    <p className="text-xs text-[#5C4E57]">
                       {(selectedFile.size / 1024).toFixed(1)} KB • {isDicom ? 'DICOM Medical Object' : selectedFile.type || 'Standard Image'}
                     </p>
                   </div>
-                  <p className="text-[11px] text-teal-400/80">Click or drag another file to replace</p>
+                  <p className="text-[11px] text-[#890149] font-medium">Click or drag another file to replace</p>
                 </div>
               ) : (
                 <div className="space-y-2 text-center">
-                  <div className="w-12 h-12 rounded-full bg-slate-800/80 flex items-center justify-center mx-auto text-slate-400 group-hover:text-teal-400">
+                  <div className="w-12 h-12 rounded-2xl bg-[#890149]/10 flex items-center justify-center mx-auto text-[#890149]">
                     <Upload className="w-6 h-6" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-slate-200">
-                      Drag & drop a chest radiograph or <span className="text-teal-400 font-semibold underline underline-offset-2">browse</span>
+                    <p className="text-sm font-semibold text-[#1E161C]">
+                      Drag & drop a chest radiograph or <span className="text-[#890149] font-bold underline underline-offset-2">browse files</span>
                     </p>
-                    <p className="text-xs text-slate-400 mt-1">
-                      Max file size: 30 MB. Supports DICOM (.dcm) with photometric interpretation & 16-bit depth.
+                    <p className="text-xs text-[#5C4E57] mt-1">
+                      Max file size: 30 MB. Supports DICOM (.dcm) with 16-bit depth & photometric decoding.
                     </p>
                   </div>
                 </div>
@@ -242,21 +242,21 @@ export function ChestXRayWorkbench({
 
             {/* Image Preview Window */}
             {selectedFile && (
-              <div className="rounded-xl border border-slate-800 bg-slate-950/60 p-4 space-y-3">
-                <div className="flex items-center justify-between text-xs text-slate-400">
-                  <span className="font-semibold uppercase tracking-wider text-slate-300">
-                    Radiograph Inspection Preview
+              <div className="rounded-2xl border border-[#E5E5D8] bg-[#FAF9F5] p-4 space-y-3">
+                <div className="flex items-center justify-between text-xs text-[#5C4E57]">
+                  <span className="font-bold uppercase tracking-wider text-[#1E161C]">
+                    Radiograph Inspection View
                   </span>
-                  <span>{isDicom ? 'DICOM Stream' : 'RGB / Grayscale Ingest'}</span>
+                  <span className="font-mono">{isDicom ? 'DICOM Stream' : 'RGB Ingest'}</span>
                 </div>
 
-                <div className="relative aspect-square max-h-[340px] w-full mx-auto rounded-lg overflow-hidden bg-black flex items-center justify-center border border-slate-800/80">
+                <div className="relative aspect-square max-h-[340px] w-full mx-auto rounded-xl overflow-hidden bg-[#0C060A] flex items-center justify-center border border-[#D4D4C5]">
                   {isDicom ? (
                     <div className="text-center p-6 space-y-2">
-                      <FileText className="w-12 h-12 text-teal-400 mx-auto" />
-                      <p className="text-sm font-semibold text-slate-200">DICOM Object Attached</p>
-                      <p className="text-xs text-slate-400 max-w-xs">
-                        Raw pixel array and DICOM metadata will be decoded server-side via <code className="text-teal-300 font-mono">pydicom</code> during analysis.
+                      <FileText className="w-12 h-12 text-[#890149] mx-auto" />
+                      <p className="text-sm font-bold text-[#F3F3E7]">DICOM Object Attached</p>
+                      <p className="text-xs text-[#F3F3E7]/70 max-w-xs">
+                        Pixel array and DICOM metadata are decoded server-side via <code className="text-[#F3F3E7] font-mono font-bold">pydicom</code>.
                       </p>
                     </div>
                   ) : previewUrl ? (
@@ -272,7 +272,7 @@ export function ChestXRayWorkbench({
                 <div className="flex items-center justify-between pt-2">
                   <button
                     onClick={handleReset}
-                    className="text-xs text-slate-400 hover:text-slate-200 transition-colors"
+                    className="text-xs text-[#5C4E57] hover:text-[#1E161C] font-medium transition-colors"
                   >
                     Clear selection
                   </button>
@@ -280,15 +280,15 @@ export function ChestXRayWorkbench({
                   <button
                     onClick={handleAnalyze}
                     disabled={analyzing}
-                    className={`px-5 py-2 rounded-lg font-semibold text-xs tracking-wide flex items-center gap-2 transition-all ${
+                    className={`px-5 py-2.5 rounded-xl font-bold text-xs tracking-wide flex items-center gap-2 transition-all ${
                       analyzing
-                        ? 'bg-slate-700 text-slate-400 cursor-not-allowed'
-                        : 'bg-teal-500 hover:bg-teal-400 text-slate-950 shadow-lg shadow-teal-500/20'
+                        ? 'bg-slate-300 text-slate-500 cursor-not-allowed'
+                        : 'bg-[#890149] hover:bg-[#680037] text-[#F3F3E7] shadow-md shadow-[#890149]/20 active:scale-95'
                     }`}
                   >
                     {analyzing ? (
                       <>
-                        <RefreshCw className="w-4 h-4 animate-spin text-slate-300" />
+                        <RefreshCw className="w-4 h-4 animate-spin text-[#F3F3E7]" />
                         <span>Running Inference...</span>
                       </>
                     ) : (
@@ -307,20 +307,20 @@ export function ChestXRayWorkbench({
         {/* Right Column: Inference Results & Model Specifications (5 Cols) */}
         <div className="lg:col-span-5 space-y-4">
           {/* Inference Output Card */}
-          <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-5 space-y-4 backdrop-blur-sm">
-            <h3 className="text-sm font-semibold text-white flex items-center gap-2">
-              <Activity className="w-4 h-4 text-teal-400" />
+          <div className="bg-white/95 border border-[#E5E5D8] rounded-2xl p-6 space-y-4 shadow-sm backdrop-blur-sm">
+            <h3 className="text-sm font-bold text-[#1E161C] flex items-center gap-2">
+              <Activity className="w-4 h-4 text-[#890149]" />
               CNN Inference Response
             </h3>
 
             {/* State 1: Error during API call */}
             {analysisError && (
-              <div className="p-4 rounded-xl bg-rose-950/20 border border-rose-500/30 text-rose-200 text-xs space-y-1">
-                <div className="flex items-center gap-2 text-rose-400 font-semibold">
+              <div className="p-4 rounded-xl bg-rose-50 border border-rose-300 text-rose-900 text-xs space-y-1">
+                <div className="flex items-center gap-2 text-rose-700 font-bold">
                   <AlertCircle className="w-4 h-4" />
                   <span>Inference Request Failed</span>
                 </div>
-                <p className="text-rose-300/80 leading-relaxed">{analysisError}</p>
+                <p className="text-rose-800 leading-relaxed">{analysisError}</p>
               </div>
             )}
 
@@ -328,15 +328,15 @@ export function ChestXRayWorkbench({
             {analysisResult && (
               <div className="space-y-4">
                 {analysisResult.status === 'not_trained' ? (
-                  <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 space-y-3">
-                    <div className="flex items-center gap-2 text-amber-400 font-semibold text-xs">
-                      <AlertTriangle className="w-4 h-4" />
+                  <div className="p-4 rounded-xl bg-amber-50 border border-amber-300 space-y-3">
+                    <div className="flex items-center gap-2 text-amber-900 font-bold text-xs">
+                      <AlertTriangle className="w-4 h-4 text-amber-600" />
                       <span>BACKEND NOTIFICATION: MODEL NOT TRAINED</span>
                     </div>
-                    <p className="text-xs text-amber-200/90 leading-relaxed">
+                    <p className="text-xs text-amber-800 leading-relaxed">
                       {analysisResult.message}
                     </p>
-                    <div className="pt-2 border-t border-amber-500/20 text-[11px] text-amber-300/70 space-y-1 font-mono">
+                    <div className="pt-2 border-t border-amber-200 text-[11px] text-amber-900 space-y-1 font-mono">
                       <p>Model: {analysisResult.model_name}</p>
                       <p>Status: NOT TRAINED</p>
                       <p>Input File: {analysisResult.filename} ({analysisResult.file_type})</p>
@@ -345,14 +345,14 @@ export function ChestXRayWorkbench({
                 ) : analysisResult.status === 'success' ? (
                   <div className="space-y-4">
                     {/* Prediction summary */}
-                    <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800 space-y-3">
+                    <div className="p-4 rounded-xl bg-[#FAF9F5] border border-[#E5E5D8] space-y-3">
                       <div className="flex items-center justify-between">
-                        <span className="text-xs text-slate-400 font-medium">Model Classification</span>
+                        <span className="text-xs text-[#5C4E57] font-medium">Model Classification</span>
                         <span
-                          className={`text-xs font-semibold px-2.5 py-1 rounded-full ${
+                          className={`text-xs font-bold px-3 py-1 rounded-full ${
                             analysisResult.predicted_class_id === 1
-                              ? 'bg-rose-500/10 text-rose-400 border border-rose-500/30'
-                              : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30'
+                              ? 'bg-rose-100 text-rose-800 border border-rose-300'
+                              : 'bg-emerald-100 text-emerald-800 border border-emerald-300'
                           }`}
                         >
                           {analysisResult.prediction || 'Unknown'}
@@ -362,17 +362,17 @@ export function ChestXRayWorkbench({
                       {/* Confidence bar */}
                       <div className="space-y-1.5">
                         <div className="flex justify-between text-xs">
-                          <span className="text-slate-400">Predicted Probability (Opacity / Pneumonia)</span>
-                          <span className="font-mono font-semibold text-white">
+                          <span className="text-[#5C4E57]">Predicted Probability</span>
+                          <span className="font-mono font-bold text-[#1E161C]">
                             {((analysisResult.confidence || 0) * 100).toFixed(2)}%
                           </span>
                         </div>
-                        <div className="h-2 w-full rounded-full bg-slate-800 overflow-hidden">
+                        <div className="h-2 w-full rounded-full bg-[#E5E5D8] overflow-hidden">
                           <div
                             className={`h-full transition-all duration-500 ${
                               (analysisResult.confidence || 0) > (analysisResult.threshold || 0.5)
-                                ? 'bg-gradient-to-r from-amber-500 to-rose-500'
-                                : 'bg-gradient-to-r from-teal-500 to-emerald-500'
+                                ? 'bg-gradient-to-r from-amber-500 to-[#890149]'
+                                : 'bg-gradient-to-r from-teal-500 to-emerald-600'
                             }`}
                             style={{
                               width: `${Math.min(100, Math.max(0, (analysisResult.confidence || 0) * 100))}%`,
@@ -382,16 +382,16 @@ export function ChestXRayWorkbench({
                       </div>
 
                       {/* Threshold info */}
-                      <div className="flex justify-between text-[11px] text-slate-400 pt-1 border-t border-slate-800/80">
+                      <div className="flex justify-between text-[11px] text-[#5C4E57] pt-1 border-t border-[#E5E5D8]">
                         <span>Classification Threshold: {analysisResult.threshold}</span>
                         <span>File: {analysisResult.filename}</span>
                       </div>
                     </div>
 
                     {/* Telemetry info */}
-                    <div className="p-3 rounded-lg bg-slate-950/40 border border-slate-800/80 text-xs">
-                      <p className="text-[11px] text-slate-400">Clinical Safeguard Notice</p>
-                      <p className="text-[11px] text-slate-300 mt-1 italic">
+                    <div className="p-3.5 rounded-xl bg-[#FAF9F5] border border-[#E5E5D8] text-xs">
+                      <p className="text-[11px] font-bold text-[#890149]">Clinical Safeguard Notice</p>
+                      <p className="text-[11px] text-[#5C4E57] mt-1 italic">
                         {analysisResult.disclaimer}
                       </p>
                     </div>
@@ -402,10 +402,10 @@ export function ChestXRayWorkbench({
 
             {/* State 3: Empty state when no analysis performed */}
             {!analysisResult && !analysisError && !analyzing && (
-              <div className="py-8 px-4 text-center space-y-2 border border-dashed border-slate-800 rounded-xl bg-slate-950/20">
-                <Info className="w-6 h-6 text-slate-400 mx-auto" />
-                <p className="text-xs font-medium text-slate-300">Awaiting Ingestion & Analysis</p>
-                <p className="text-[11px] text-slate-400 max-w-xs mx-auto">
+              <div className="py-8 px-4 text-center space-y-2 border border-dashed border-[#D4D4C5] rounded-xl bg-[#FAF9F5]/60">
+                <Info className="w-6 h-6 text-[#890149] mx-auto" />
+                <p className="text-xs font-bold text-[#1E161C]">Awaiting Radiograph Ingestion</p>
+                <p className="text-[11px] text-[#5C4E57] max-w-xs mx-auto">
                   Select a frontal chest radiograph (DICOM or PNG/JPEG) and click &quot;Run Model Inference&quot; to test the pipeline.
                 </p>
               </div>
@@ -413,11 +413,11 @@ export function ChestXRayWorkbench({
 
             {/* State 4: Loading state */}
             {analyzing && (
-              <div className="py-8 px-4 text-center space-y-3 border border-slate-800 rounded-xl bg-slate-950/40 animate-pulse">
-                <RefreshCw className="w-8 h-8 text-teal-400 mx-auto animate-spin" />
+              <div className="py-8 px-4 text-center space-y-3 border border-[#890149]/30 rounded-xl bg-[#890149]/5 animate-pulse">
+                <RefreshCw className="w-8 h-8 text-[#890149] mx-auto animate-spin" />
                 <div className="space-y-1">
-                  <p className="text-xs font-semibold text-slate-200">Evaluating Radiograph via ResNet-50</p>
-                  <p className="text-[11px] text-slate-400">
+                  <p className="text-xs font-bold text-[#1E161C]">Evaluating Radiograph via ResNet-50</p>
+                  <p className="text-[11px] text-[#5C4E57]">
                     Executing intensity scaling, 224×224 bilinear resizing, and PyTorch forward pass...
                   </p>
                 </div>
@@ -426,51 +426,51 @@ export function ChestXRayWorkbench({
           </div>
 
           {/* Technical Architecture Specs Card */}
-          <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-5 space-y-3 backdrop-blur-sm">
-            <h3 className="text-sm font-semibold text-white flex items-center gap-2">
-              <Sliders className="w-4 h-4 text-teal-400" />
+          <div className="bg-white/95 border border-[#E5E5D8] rounded-2xl p-6 space-y-3 shadow-sm backdrop-blur-sm">
+            <h3 className="text-sm font-bold text-[#1E161C] flex items-center gap-2">
+              <Sliders className="w-4 h-4 text-[#890149]" />
               Stage 2 Technical Architecture
             </h3>
 
-            <div className="space-y-2.5 text-xs text-slate-300">
-              <div className="flex items-start justify-between py-1 border-b border-slate-800/80">
-                <span className="text-slate-400 flex items-center gap-1.5">
-                  <Cpu className="w-3.5 h-3.5 text-teal-400" />
+            <div className="space-y-2.5 text-xs text-[#1E161C]">
+              <div className="flex items-start justify-between py-1 border-b border-[#F0F0E4]">
+                <span className="text-[#5C4E57] flex items-center gap-1.5">
+                  <Cpu className="w-3.5 h-3.5 text-[#890149]" />
                   Backbone Network
                 </span>
-                <span className="font-mono text-slate-200 text-right">torchvision ResNet-50 (ImageNet-1K)</span>
+                <span className="font-mono text-[#1E161C] font-semibold text-right">ResNet-50 (ImageNet-1K)</span>
               </div>
 
-              <div className="flex items-start justify-between py-1 border-b border-slate-800/80">
-                <span className="text-slate-400 flex items-center gap-1.5">
-                  <Database className="w-3.5 h-3.5 text-teal-400" />
+              <div className="flex items-start justify-between py-1 border-b border-[#F0F0E4]">
+                <span className="text-[#5C4E57] flex items-center gap-1.5">
+                  <Database className="w-3.5 h-3.5 text-[#890149]" />
                   Primary Dataset
                 </span>
-                <span className="font-mono text-slate-200 text-right">RSNA Pneumonia Detection Challenge</span>
+                <span className="font-mono text-[#890149] font-bold text-right">RSNA Pneumonia Challenge</span>
               </div>
 
-              <div className="flex items-start justify-between py-1 border-b border-slate-800/80">
-                <span className="text-slate-400 flex items-center gap-1.5">
-                  <Layers className="w-3.5 h-3.5 text-teal-400" />
+              <div className="flex items-start justify-between py-1 border-b border-[#F0F0E4]">
+                <span className="text-[#5C4E57] flex items-center gap-1.5">
+                  <Layers className="w-3.5 h-3.5 text-[#890149]" />
                   Resolution & Channels
                 </span>
-                <span className="font-mono text-slate-200 text-right">224 × 224 px • 3-Channel RGB</span>
+                <span className="font-mono text-[#1E161C] font-semibold text-right">224 × 224 px • 3-Channel RGB</span>
               </div>
 
-              <div className="flex items-start justify-between py-1 border-b border-slate-800/80">
-                <span className="text-slate-400 flex items-center gap-1.5">
-                  <Activity className="w-3.5 h-3.5 text-teal-400" />
+              <div className="flex items-start justify-between py-1 border-b border-[#F0F0E4]">
+                <span className="text-[#5C4E57] flex items-center gap-1.5">
+                  <Activity className="w-3.5 h-3.5 text-[#890149]" />
                   Loss & Optimization
                 </span>
-                <span className="font-mono text-slate-200 text-right">BCEWithLogitsLoss (Class-Weighted)</span>
+                <span className="font-mono text-[#1E161C] font-semibold text-right">BCEWithLogits (Weighted)</span>
               </div>
 
               <div className="flex items-start justify-between py-1">
-                <span className="text-slate-400 flex items-center gap-1.5">
-                  <ShieldAlert className="w-3.5 h-3.5 text-teal-400" />
+                <span className="text-[#5C4E57] flex items-center gap-1.5">
+                  <ShieldAlert className="w-3.5 h-3.5 text-[#890149]" />
                   Splitting Strategy
                 </span>
-                <span className="font-mono text-slate-200 text-right">Patient-Level Grouping (Zero Leakage)</span>
+                <span className="font-mono text-emerald-700 font-bold text-right">Zero Patient Leakage</span>
               </div>
             </div>
           </div>

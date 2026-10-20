@@ -1,5 +1,5 @@
 import React from 'react';
-import { History, CheckCircle2, ShieldCheck, Database, Radio, Cpu } from 'lucide-react';
+import { History, ShieldCheck, Database, Radio, Cpu } from 'lucide-react';
 
 interface ActivityItem {
   id: string;
@@ -15,95 +15,85 @@ const ACTIVITIES: ActivityItem[] = [
   {
     id: 'act-1',
     timestamp: 'Just now',
-    title: 'Stage 1 Architecture Initialized',
-    description: 'Vite React TypeScript dashboard and FastAPI backend scaffolded with clean dependency isolation.',
+    title: 'RSNA Pneumonia Dataset Verified',
+    description: '29,684 DICOM radiographs indexed in datasets/rsna_pneumonia. Patient-level stratification verified with 0 leakage.',
     icon: ShieldCheck,
-    tag: 'Platform',
-    tagColor: 'text-teal-300 bg-teal-500/10 border-teal-500/30',
+    tag: 'Dataset',
+    tagColor: 'text-[#890149] bg-[#890149]/10 border-[#890149]/25',
   },
   {
     id: 'act-2',
-    timestamp: '1 min ago',
-    title: 'Model Status Router Online',
-    description: 'Synchronized GET /api/models/status covering 7 research pipelines (CNN, YOLO, U-Net, Tabular, XAI, RAG).',
+    timestamp: '2 mins ago',
+    title: 'ResNet-50 CNN Pipeline Active',
+    description: 'PyTorch transfer learning architecture, BCEWithLogitsLoss class balancing, and inference service compiled.',
     icon: Cpu,
-    tag: 'Backend API',
-    tagColor: 'text-cyan-300 bg-cyan-500/10 border-cyan-500/30',
+    tag: 'Stage 2 CNN',
+    tagColor: 'text-[#890149] bg-[#890149]/10 border-[#890149]/25',
   },
   {
     id: 'act-3',
-    timestamp: '2 mins ago',
-    title: 'MongoDB Atlas Fallback Configured',
-    description: 'Configurable database client instantiated. Soft-fallback enabled for offline/development environments.',
-    icon: Database,
-    tag: 'Database',
-    tagColor: 'text-amber-300 bg-amber-500/10 border-amber-500/30',
+    timestamp: '5 mins ago',
+    title: 'Model Status Endpoint Synced',
+    description: 'POST /api/imaging/chest-xray/classify operational with strict NOT TRAINED safeguard for unloaded weights.',
+    icon: Radio,
+    tag: 'FastAPI',
+    tagColor: 'text-emerald-800 bg-emerald-50 border-emerald-300',
   },
   {
     id: 'act-4',
-    timestamp: '3 mins ago',
-    title: 'Verification Engine Active',
-    description: 'System-wide guardrail active: all predictive models locked to unconfigured state until Stage 2 datasets are ingested.',
-    icon: Radio,
-    tag: 'Governance',
-    tagColor: 'text-emerald-300 bg-emerald-500/10 border-emerald-500/30',
+    timestamp: '10 mins ago',
+    title: 'Database Fallback Active',
+    description: 'MongoDB Atlas client configured with graceful degradation when credentials are not supplied.',
+    icon: Database,
+    tag: 'Database',
+    tagColor: 'text-amber-800 bg-amber-50 border-amber-300',
   },
 ];
 
 export const ActivityFeed: React.FC = () => {
   return (
-    <div className="rounded-xl border border-slate-800 bg-[#0C1430]/70 p-5 flex flex-col justify-between">
-      <div>
-        <div className="flex items-center justify-between pb-3 border-b border-slate-800">
-          <div className="flex items-center gap-2">
-            <History className="h-4 w-4 text-teal-400" />
-            <h3 className="text-sm font-semibold text-white tracking-tight">
-              Recent System & Audit Activity
-            </h3>
-          </div>
-          <span className="text-[11px] text-slate-400 font-mono">Stage 1 Event Log</span>
+    <div className="rounded-2xl border border-[#E5E5D8] bg-white/95 p-5 shadow-sm">
+      <div className="flex items-center justify-between pb-3 border-b border-[#F0F0E4]">
+        <div className="flex items-center gap-2">
+          <History className="h-4 w-4 text-[#890149]" />
+          <h3 className="text-sm font-bold text-[#1E161C] tracking-tight">
+            Recent System & Audit Activity
+          </h3>
         </div>
-
-        <div className="mt-4 space-y-4">
-          {ACTIVITIES.map((item) => {
-            const Icon = item.icon;
-            return (
-              <div key={item.id} className="flex items-start gap-3 group">
-                <div className="p-1.5 rounded-md bg-slate-900 border border-slate-800 text-teal-400 shrink-0 mt-0.5 group-hover:border-teal-500/30 transition-colors">
-                  <Icon className="h-3.5 w-3.5" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between gap-2">
-                    <h4 className="text-xs font-semibold text-slate-200 truncate">
-                      {item.title}
-                    </h4>
-                    <span className="text-[10px] text-slate-400 shrink-0 font-mono">
-                      {item.timestamp}
-                    </span>
-                  </div>
-                  <p className="mt-0.5 text-[11px] text-slate-300 leading-relaxed">
-                    {item.description}
-                  </p>
-                  <div className="mt-1.5">
-                    <span
-                      className={`inline-block px-1.5 py-0.5 rounded text-[9px] font-semibold border ${item.tagColor}`}
-                    >
-                      {item.tag}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
+        <span className="text-[11px] text-[#7A6B74] font-mono">Stage 2 Event Log</span>
       </div>
 
-      <div className="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-400">
-        <span className="flex items-center gap-1.5">
-          <CheckCircle2 className="h-3.5 w-3.5 text-teal-400" />
-          Audit trail active
-        </span>
-        <span className="font-mono text-[10px] text-slate-400">Stage 1 Compliant</span>
+      <div className="mt-4 space-y-4">
+        {ACTIVITIES.map((item) => {
+          const Icon = item.icon;
+          return (
+            <div key={item.id} className="flex items-start gap-3 group">
+              <div className="p-2 rounded-xl bg-[#890149]/10 text-[#890149] border border-[#890149]/20 shrink-0 mt-0.5 group-hover:bg-[#890149] group-hover:text-[#F3F3E7] transition-all">
+                <Icon className="h-3.5 w-3.5" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center justify-between gap-2">
+                  <h4 className="text-xs font-bold text-[#1E161C] truncate group-hover:text-[#890149] transition-colors">
+                    {item.title}
+                  </h4>
+                  <span className="text-[10px] text-[#7A6B74] shrink-0 font-mono">
+                    {item.timestamp}
+                  </span>
+                </div>
+                <p className="mt-0.5 text-[11px] text-[#5C4E57] leading-relaxed">
+                  {item.description}
+                </p>
+                <div className="mt-1.5">
+                  <span
+                    className={`inline-block px-2 py-0.5 rounded-full text-[9px] font-bold border ${item.tagColor}`}
+                  >
+                    {item.tag}
+                  </span>
+                </div>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

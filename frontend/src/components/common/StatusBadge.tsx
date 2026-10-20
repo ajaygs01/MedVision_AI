@@ -12,29 +12,29 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, label, pulse =
       case 'online':
       case 'connected':
         return {
-          bg: 'bg-emerald-950/60 border-emerald-500/40 text-emerald-300',
-          dot: 'bg-emerald-400',
+          bg: 'bg-emerald-50 border-emerald-300 text-emerald-800',
+          dot: 'bg-emerald-600',
           defaultText: status === 'online' ? 'Online' : 'Connected',
         };
       case 'untrained':
       case 'pending':
         return {
-          bg: 'bg-amber-950/70 border-amber-500/50 text-amber-300 font-bold',
-          dot: 'bg-amber-400',
+          bg: 'bg-amber-50 border-amber-300 text-amber-900 font-bold',
+          dot: 'bg-amber-500',
           defaultText: status === 'untrained' ? 'NOT TRAINED' : 'Pending',
         };
       case 'offline':
       case 'disconnected':
         return {
-          bg: 'bg-rose-950/60 border-rose-500/40 text-rose-300',
-          dot: 'bg-rose-400',
+          bg: 'bg-rose-50 border-rose-300 text-rose-800',
+          dot: 'bg-rose-500',
           defaultText: status === 'offline' ? 'Offline' : 'Disconnected',
         };
       case 'info':
       default:
         return {
-          bg: 'bg-cyan-950/60 border-cyan-500/40 text-cyan-300',
-          dot: 'bg-cyan-400',
+          bg: 'bg-[#890149]/10 border-[#890149]/25 text-[#890149] font-semibold',
+          dot: 'bg-[#890149]',
           defaultText: 'Information',
         };
     }
@@ -45,7 +45,7 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, label, pulse =
 
   return (
     <span
-      className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium border tracking-wide transition-all ${style.bg}`}
+      className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold border tracking-wide transition-all shadow-2xs ${style.bg}`}
     >
       <span
         className={`w-1.5 h-1.5 rounded-full ${style.dot} ${pulse ? 'animate-status-pulse' : ''}`}

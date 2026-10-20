@@ -114,8 +114,16 @@ export function App() {
   const dbStatus = health?.database?.status || 'disconnected';
 
   return (
-    <div className="flex min-h-screen bg-[#070D1F] text-slate-100 antialiased selection:bg-teal-500/30 selection:text-teal-200">
-      {/* Persistent Left Sidebar Navigation */}
+    <div className="flex min-h-screen bg-[#F3F3E7] text-[#1E161C] antialiased selection:bg-[#890149]/20 selection:text-[#890149] relative overflow-x-hidden">
+      {/* Background Ambient Aura Orbs & Medical Grid */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <div className="absolute -top-32 -right-32 w-[600px] h-[600px] rounded-full bg-[#890149]/12 blur-[130px] animate-float-slow" />
+        <div className="absolute top-1/2 -left-32 w-[520px] h-[520px] rounded-full bg-[#B01066]/10 blur-[140px] animate-float-reverse" />
+        <div className="absolute -bottom-32 right-1/4 w-[500px] h-[500px] rounded-full bg-[#890149]/8 blur-[120px]" />
+        <div className="absolute inset-0 bg-medical-grid opacity-60" />
+      </div>
+
+      {/* Persistent Left Sidebar Navigation in Deep Cherry */}
       <Sidebar
         activeTab={activeTab}
         onSelectTab={setActiveTab}
@@ -124,7 +132,7 @@ export function App() {
       />
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0 bg-[#0B132B]">
+      <div className="flex-1 flex flex-col min-w-0 relative z-10">
         {/* Sticky Top Navigation Bar */}
         <Navbar
           currentTabName={TAB_TITLES[activeTab] || 'Dashboard'}
@@ -154,15 +162,15 @@ export function App() {
           )}
 
           {/* Institutional Academic Footer */}
-          <footer className="mt-12 pt-6 border-t border-slate-800/80 text-center text-xs text-slate-300 space-y-1">
-            <p className="font-medium text-slate-400">
-              MediVision AI • Final-Year Major Research Project • Stage 1 Software Architecture Foundation
+          <footer className="mt-12 pt-6 border-t border-[#E5E5D8] text-center text-xs text-[#5C4E57] space-y-1">
+            <p className="font-semibold text-[#890149]">
+              MediVision AI • Final-Year Major Research Project • Multi-Disease Biomedical Intelligence
             </p>
-            <p className="text-[11px] text-slate-400">
-              Strict Medical Integrity Safeguard: Predictive algorithms and weights are currently unloaded. No actual clinical diagnoses are executed.
+            <p className="text-[11px] text-[#7A6B74]">
+              Strict Medical Integrity Safeguard: Predictive algorithms are research prototypes. No clinical diagnosis is executed without validated human verification.
             </p>
             {lastSyncTime && (
-              <p className="text-[10px] text-slate-400 font-mono">
+              <p className="text-[10px] text-[#8C7D87] font-mono">
                 Telemetry synchronized at {lastSyncTime}
               </p>
             )}
