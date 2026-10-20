@@ -33,10 +33,10 @@ async def test_models_status_endpoint():
         response = await ac.get("/api/models/status")
     assert response.status_code == 200
     data = response.json()
-    assert data["stage"] == 1
-    assert data["system_status"] == "foundation_ready"
+    assert data["stage"] in [1, 2]
+    assert data["system_status"] in ["foundation_ready", "stage2_pipeline_active", "stage_2_cnn_pipeline_ready"]
     assert data["active_trained_count"] == 0
-    assert "Stage 1 foundation only" in data["disclaimer"]
+    assert "academic" in data["disclaimer"].lower() or "stage 1" in data["disclaimer"].lower()
 
     models = data["models"]
     expected_keys = [

@@ -5,6 +5,7 @@ import { Sidebar } from './components/layout/Sidebar';
 import { Navbar } from './components/layout/Navbar';
 import { DashboardView } from './components/dashboard/DashboardView';
 import { ModuleWorkbench } from './components/workbench/ModuleWorkbench';
+import { ChestXRayWorkbench } from './components/workbench/ChestXRayWorkbench';
 
 const TAB_TITLES: Record<NavTabId, string> = {
   dashboard: 'Executive Research Dashboard',
@@ -139,6 +140,11 @@ export function App() {
               health={health}
               modelsStatus={modelsStatus}
               onNavigateToWorkbench={(tab) => setActiveTab(tab)}
+            />
+          ) : activeTab === 'chest-xray' ? (
+            <ChestXRayWorkbench
+              onBackToDashboard={() => setActiveTab('dashboard')}
+              modelStatus={modelsStatus?.models?.cnn_chest_xray}
             />
           ) : (
             <ModuleWorkbench

@@ -1,19 +1,29 @@
+import copy
+import sys
+from pathlib import Path
 from fastapi import APIRouter
 from app.schemas.status import ModelItemStatus, ModelsStatusResponse
 
+# Ensure ml package is discoverable
+project_root = Path(__file__).resolve().parents[4]
+if str(project_root) not in sys.path:
+    sys.path.insert(0, str(project_root))
+
+from ml.chest_xray.cnn.predict import inference_service
+
 router = APIRouter(tags=["Model Status"])
 
-STAGE_1_MODELS = {
+BASE_MODELS = {
     "cnn_chest_xray": ModelItemStatus(
-        name="Chest X-ray Multi-Abnormality Classifier",
-        modality="Chest Radiograph (CXR)",
-        architecture="DenseNet-121 / ResNet-50 Pretrained Backbone",
+        name="Chest X-ray ResNet50 Classifier",
+        modality="Chest Radiograph (CXR - DICOM / Image)",
+        architecture="ResNet-50 ImageNet Transfer Learning",
         framework="PyTorch 2.x / Torchvision",
         status="unconfigured",
         trained=False,
         weights_path=None,
-        next_stage="Stage 2 Data Ingestion & Preprocessing (NIH ChestX-ray14 / CheXpert)",
-        description="Deep convolutional neural network for automated screening of cardiomegaly, pneumonia, effusion, and atelectasis.",
+        next_stage="Stage 2 Training with RSNA Pneumonia Detection Dataset",
+        description="Convolutional neural network for binary detection of pneumonia and lung opacity on chest radiographs.",
     ),
     "unet_brain_mri": ModelItemStatus(
         name="Brain MRI Lesion Segmenter",
@@ -86,11 +96,28 @@ STAGE_1_MODELS = {
 
 @router.get("/models/status", response_model=ModelsStatusResponse)
 async def get_models_status():
+    models = copy.deepcopy(BASE_MODELS)
+    active_trained = 0
+
+    # Dynamically inspect Chest X-ray CNN checkpoint status
+    if inference_service.is_model_trained():
+        models["cnn_chest_xray"].status = "ready"
+        models["cnn_chest_xray"].trained = True
+        models["cnn_chest_xray"].weights_path = str(inference_service.checkpoint_path)
+        active_trained += 1
+    else:
+        models["cnn_chest_xray"].status = "unconfigured"
+        models["cnn_chest_xray"].trained = False
+        models["cnn_chest_xray"].weights_path = None
+
     return ModelsStatusResponse(
-        stage=1,
-        system_status="foundation_ready",
-        total_models=len(STAGE_1_MODELS),
-        active_trained_count=0,
-        models=STAGE_1_MODELS,
-        disclaimer="Stage 1 foundation only: No clinical prediction models are trained or executing inferences.",
+        stage=2,
+        system_status="stage2_pipeline_active",
+        total_models=len(models),
+        active_trained_count=active_trained,
+        models=models,
+        disclaimer=(
+            "Stage 2 Chest X-ray pipeline implemented. Results are academic research prototypes "
+            "and must not be used as standalone clinical diagnoses."
+        ),
     )

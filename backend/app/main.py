@@ -1,7 +1,7 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.api.endpoints import health, models
+from app.api.endpoints import health, imaging, models
 from app.core.config import get_settings
 from app.db.mongodb import close_mongo_connection
 
@@ -10,7 +10,7 @@ from app.db.mongodb import close_mongo_connection
 async def lifespan(app: FastAPI):
     # Startup actions
     settings = get_settings()
-    print(f"[MediVision AI] Starting Stage 1 Backend on {settings.host}:{settings.port}")
+    print(f"[MediVision AI] Starting Stage 2 Backend on {settings.host}:{settings.port}")
     yield
     # Shutdown actions
     await close_mongo_connection()
@@ -23,7 +23,7 @@ def create_application() -> FastAPI:
     app = FastAPI(
         title=settings.project_name,
         version=settings.version,
-        description="MediVision AI Research Platform - Stage 1 Foundation API",
+        description="MediVision AI Research Platform - Stage 2 Multi-Disease AI API",
         lifespan=lifespan,
     )
 
@@ -39,6 +39,7 @@ def create_application() -> FastAPI:
     # API Routers
     app.include_router(health.router, prefix=settings.api_v1_prefix)
     app.include_router(models.router, prefix=settings.api_v1_prefix)
+    app.include_router(imaging.router, prefix=settings.api_v1_prefix)
 
     @app.get("/")
     async def root():

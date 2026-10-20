@@ -69,3 +69,16 @@ export interface ModuleTechnicalDetails {
   pipelineSteps: string[];
   plannedEvaluationMetrics: string[];
 }
+
+export interface ChestXRayClassifyResponse {
+  status: 'success' | 'not_trained' | 'error';
+  model_name: string;
+  prediction: string | null;
+  predicted_class_id: number | null;
+  confidence: number | null;
+  threshold: number;
+  filename: string;
+  file_type: string;
+  message: string;
+  disclaimer: string;
+}

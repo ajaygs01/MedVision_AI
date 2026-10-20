@@ -40,6 +40,17 @@ dist-ssr/
 *.pem
 *.key
 
+# Datasets and large medical imagery (keep README.md)
+datasets/*
+!datasets/README.md
+
+# ML Model Artifacts and Checkpoints
+model_artifacts/
+*.pth
+*.pt
+*.onnx
+*.bin
+
 # IDE & OS
 .vscode/
 .idea/
