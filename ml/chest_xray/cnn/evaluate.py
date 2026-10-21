@@ -129,12 +129,15 @@ def run_evaluation(
     )
 
     # Reconstruct model and load weights
-    model = build_resnet50_model(pretrained=False)
     checkpoint_data = torch.load(ckpt, map_location=device)
-    if "model_state_dict" in checkpoint_data:
-        model.load_state_dict(checkpoint_data["model_state_dict"])
+    if isinstance(checkpoint_data, dict) and "model_state_dict" in checkpoint_data:
+        state_dict = checkpoint_data["model_state_dict"]
     else:
-        model.load_state_dict(checkpoint_data)
+        state_dict = checkpoint_data
+
+    has_fc_weight = "fc.weight" in state_dict
+    model = build_resnet50_model(pretrained=False, use_dropout=not has_fc_weight)
+    model.load_state_dict(state_dict)
     model.to(device)
     model.eval()
 
