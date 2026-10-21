@@ -50,9 +50,26 @@ class CNNConfig:
     def images_dir_path(self) -> Path:
         return self.dataset_dir / self.images_dir_name
 
+    checkpoint_path_override: Optional[Path] = None
+
     @property
     def checkpoint_path(self) -> Path:
-        return self.artifacts_dir / self.checkpoint_filename
+        if self.checkpoint_path_override is not None:
+            return self.checkpoint_path_override
+
+        backend_ckpt = self.project_root / "backend" / "model_artifacts" / "chest_xray" / "resnet50_best.pth"
+        root_ckpt = self.artifacts_dir / self.checkpoint_filename
+
+        # If custom artifacts_dir was provided, respect it
+        default_artifacts = self.project_root / "model_artifacts" / "chest_xray_cnn"
+        if self.artifacts_dir != default_artifacts:
+            return root_ckpt
+
+        if backend_ckpt.exists() and backend_ckpt.stat().st_size > 0:
+            return backend_ckpt
+        if root_ckpt.exists() and root_ckpt.stat().st_size > 0:
+            return root_ckpt
+        return backend_ckpt
 
     @property
     def metrics_path(self) -> Path:

@@ -14,12 +14,14 @@ def dummy_png_bytes():
 
 
 @pytest.mark.asyncio
-async def test_classify_chest_xray_not_trained(dummy_png_bytes):
+async def test_classify_chest_xray_endpoint(dummy_png_bytes):
     """
     Verifies that calling POST /api/imaging/chest-xray/classify
-    without a trained checkpoint returns 200 OK with status: 'not_trained'
-    and zero fake predictions.
+    returns 200 OK with proper status ('success' when trained, 'not_trained' when absent)
+    and valid schema without fabricated values.
     """
+    from app.services.chest_xray import chest_xray_service
+
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
         files = {
             "file": ("test_radiograph.png", dummy_png_bytes, "image/png"),
@@ -28,11 +30,18 @@ async def test_classify_chest_xray_not_trained(dummy_png_bytes):
 
     assert response.status_code == 200
     data = response.json()
-    assert data["status"] == "not_trained"
-    assert data["prediction"] is None
-    assert data["confidence"] is None
-    assert "not found" in data["message"].lower() or "not trained" in data["message"].lower()
     assert "Academic research prototype" in data["disclaimer"]
+
+    if chest_xray_service.is_ready():
+        assert data["status"] == "success"
+        assert data["prediction"] in ["Lung Opacity / Pneumonia", "Normal / No Lung Opacity"]
+        assert data["predicted_class_id"] in [0, 1]
+        assert isinstance(data["confidence"], float)
+        assert 0.0 <= data["confidence"] <= 1.0
+    else:
+        assert data["status"] == "not_trained"
+        assert data["prediction"] is None
+        assert data["confidence"] is None
 
 
 @pytest.mark.asyncio
@@ -49,6 +58,22 @@ async def test_classify_chest_xray_invalid_file():
     assert response.status_code == 400
     data = response.json()
     assert "Unsupported file format" in data["detail"]
+
+
+@pytest.mark.asyncio
+async def test_classify_chest_xray_empty_file():
+    """
+    Verifies that uploading an empty file returns HTTP 400 Bad Request.
+    """
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
+        files = {
+            "file": ("empty.png", b"", "image/png"),
+        }
+        response = await ac.post("/api/imaging/chest-xray/classify", files=files)
+
+    assert response.status_code == 400
+    data = response.json()
+    assert "empty" in data["detail"].lower()
 
 
 @pytest.mark.asyncio

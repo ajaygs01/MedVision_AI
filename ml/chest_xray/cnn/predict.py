@@ -64,6 +64,13 @@ class ChestXRayInferenceService:
             "disclaimer": RESEARCH_DISCLAIMER,
         }
 
+    def load_model(self) -> Optional["torch.nn.Module"]:
+        """Loads and caches the trained PyTorch ResNet-50 model at startup if checkpoint exists."""
+        if not self.is_model_trained():
+            logger.info(f"Model checkpoint not found at '{self.checkpoint_path}'. Service initialized in not_trained state.")
+            return None
+        return self._load_model()
+
     def _load_model(self) -> "torch.nn.Module":
         """Loads and caches the trained PyTorch ResNet-50 model."""
         if not self.is_model_trained():
@@ -77,13 +84,17 @@ class ChestXRayInferenceService:
                 raise ImportError("PyTorch is required for model inference.")
 
             logger.info(f"Loading ResNet-50 checkpoint from '{self.checkpoint_path}' on {self.device}...")
-            model = build_resnet50_model(pretrained=False)
             checkpoint_data = torch.load(self.checkpoint_path, map_location=self.device)
 
             if isinstance(checkpoint_data, dict) and "model_state_dict" in checkpoint_data:
-                model.load_state_dict(checkpoint_data["model_state_dict"])
+                state_dict = checkpoint_data["model_state_dict"]
             else:
-                model.load_state_dict(checkpoint_data)
+                state_dict = checkpoint_data
+
+            # Support both direct Linear(2048, 1) and Sequential Dropout+Linear
+            has_fc_weight = "fc.weight" in state_dict
+            model = build_resnet50_model(pretrained=False, use_dropout=not has_fc_weight)
+            model.load_state_dict(state_dict)
 
             model.to(self.device)
             model.eval()

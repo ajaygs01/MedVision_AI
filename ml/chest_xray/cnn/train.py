@@ -37,7 +37,7 @@ def set_seed(seed: int = 42):
             torch.cuda.manual_seed_all(seed)
 
 
-def build_resnet50_model(pretrained: bool = True) -> "torch.nn.Module":
+def build_resnet50_model(pretrained: bool = True, use_dropout: bool = False) -> "torch.nn.Module":
     """
     Constructs a ResNet50 model with transfer learning weights
     and a custom single-logit output head for binary classification.
@@ -56,10 +56,13 @@ def build_resnet50_model(pretrained: bool = True) -> "torch.nn.Module":
         model = models.resnet50(weights=None)
 
     in_features = model.fc.in_features
-    model.fc = nn.Sequential(
-        nn.Dropout(p=0.3),
-        nn.Linear(in_features, 1),
-    )
+    if use_dropout:
+        model.fc = nn.Sequential(
+            nn.Dropout(p=0.3),
+            nn.Linear(in_features, 1),
+        )
+    else:
+        model.fc = nn.Linear(in_features, 1)
     return model
 
 

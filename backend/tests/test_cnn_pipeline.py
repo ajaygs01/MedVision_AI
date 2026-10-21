@@ -125,3 +125,33 @@ def test_upload_validation_rejects_invalid_inputs(sample_png_bytes):
     is_valid, ftype, _ = service.validate_upload(png_bytes, "scan.png")
     assert is_valid is True
     assert ftype == "standard_image"
+
+
+def test_chest_xray_service_startup_and_inference(sample_png_bytes):
+    """
+    Tests that ChestXRayService loads the trained checkpoint and executes
+    valid inference without fabricating scores.
+    """
+    from app.services.chest_xray import ChestXRayService
+    _, png_bytes = sample_png_bytes
+
+    service = ChestXRayService()
+    loaded = service.load_model()
+
+    if service.is_model_trained():
+        assert loaded is True
+        assert service.is_ready() is True
+
+        result = service.predict(png_bytes, "synthetic_test.png")
+        assert result["status"] == "success"
+        assert result["prediction"] in ["Lung Opacity / Pneumonia", "Normal / No Lung Opacity"]
+        assert result["predicted_class_id"] in [0, 1]
+        assert isinstance(result["confidence"], float)
+        assert 0.0 <= result["confidence"] <= 1.0
+        assert "Academic research prototype" in result["disclaimer"]
+    else:
+        assert service.is_ready() is False
+        result = service.predict(png_bytes, "synthetic_test.png")
+        assert result["status"] == "not_trained"
+        assert result["prediction"] is None
+

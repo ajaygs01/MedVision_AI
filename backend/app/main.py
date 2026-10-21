@@ -11,6 +11,18 @@ async def lifespan(app: FastAPI):
     # Startup actions
     settings = get_settings()
     print(f"[MediVision AI] Starting Stage 2 Backend on {settings.host}:{settings.port}")
+
+    # Load Chest X-ray ResNet-50 model once at application startup
+    from app.services.chest_xray import chest_xray_service
+    try:
+        loaded = chest_xray_service.load_model()
+        if loaded:
+            print(f"[MediVision AI] ResNet-50 model pre-loaded successfully from {chest_xray_service.checkpoint_path}")
+        else:
+            print("[MediVision AI] ResNet-50 checkpoint unconfigured; continuing in safe not_trained mode.")
+    except Exception as exc:
+        print(f"[MediVision AI] Note: Model pre-load deferred ({exc})")
+
     yield
     # Shutdown actions
     await close_mongo_connection()

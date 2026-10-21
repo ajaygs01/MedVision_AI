@@ -3,13 +3,7 @@ import sys
 from pathlib import Path
 from fastapi import APIRouter
 from app.schemas.status import ModelItemStatus, ModelsStatusResponse
-
-# Ensure ml package is discoverable
-project_root = Path(__file__).resolve().parents[4]
-if str(project_root) not in sys.path:
-    sys.path.insert(0, str(project_root))
-
-from ml.chest_xray.cnn.predict import inference_service
+from app.services.chest_xray import chest_xray_service
 
 router = APIRouter(tags=["Model Status"])
 
@@ -100,10 +94,10 @@ async def get_models_status():
     active_trained = 0
 
     # Dynamically inspect Chest X-ray CNN checkpoint status
-    if inference_service.is_model_trained():
+    if chest_xray_service.is_ready() or chest_xray_service.is_model_trained():
         models["cnn_chest_xray"].status = "ready"
         models["cnn_chest_xray"].trained = True
-        models["cnn_chest_xray"].weights_path = str(inference_service.checkpoint_path)
+        models["cnn_chest_xray"].weights_path = str(chest_xray_service.checkpoint_path)
         active_trained += 1
     else:
         models["cnn_chest_xray"].status = "unconfigured"

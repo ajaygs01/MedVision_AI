@@ -9,7 +9,7 @@ if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 
 from app.schemas.imaging import ChestXRayClassifyResponse
-from ml.chest_xray.cnn.predict import inference_service
+from app.services.chest_xray import chest_xray_service
 
 logger = logging.getLogger("medivision.api.imaging")
 router = APIRouter(prefix="/imaging", tags=["Medical Imaging Diagnostics"])
@@ -41,7 +41,7 @@ async def classify_chest_xray(
         )
 
     # Perform inference or safe not_trained check
-    result = inference_service.predict(file_bytes, file.filename)
+    result = chest_xray_service.predict(file_bytes, file.filename)
 
     # If file format/validation error occurred, return 400
     if result.get("status") == "error":
