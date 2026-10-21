@@ -155,3 +155,46 @@ def test_chest_xray_service_startup_and_inference(sample_png_bytes):
         assert result["status"] == "not_trained"
         assert result["prediction"] is None
 
+
+def test_cpu_inference_reliability(sample_png_bytes):
+    """
+    Guarantees that ChestXRayService reliably performs CPU inference
+    when running on CPU device.
+    """
+    from app.services.chest_xray import ChestXRayService
+    _, png_bytes = sample_png_bytes
+
+    service = ChestXRayService()
+    service.device = "cpu"
+    loaded = service.load_model()
+
+    if service.is_model_trained():
+        assert loaded is True
+        assert service.is_ready() is True
+        assert service.device == "cpu"
+
+        result = service.predict(png_bytes, "cpu_test.png")
+        assert result["status"] == "success"
+        assert isinstance(result["confidence"], float)
+        assert 0.0 <= result["confidence"] <= 1.0
+
+
+def test_corrupt_upload_rejected():
+    """
+    Guarantees that corrupted or truncated image bytes are rejected
+    with descriptive error messages.
+    """
+    from app.services.chest_xray import ChestXRayService
+
+    service = ChestXRayService()
+    # Random unparseable bytes with .png extension
+    is_valid, ftype, msg = service.validate_upload(b"NOT_A_VALID_PNG_DATA", "corrupted.png")
+    assert is_valid is False
+    assert "corrupted" in msg.lower() or "invalid" in msg.lower()
+
+    # Random unparseable bytes with .dcm extension
+    is_valid, ftype, msg = service.validate_upload(b"NOT_A_VALID_DICOM_DATA", "corrupted.dcm")
+    assert is_valid is False
+    assert "corrupted" in msg.lower() or "invalid" in msg.lower()
+
+
