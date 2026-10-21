@@ -1,37 +1,37 @@
 @import "tailwindcss";
 
 @theme {
-  --color-cherry: #890149;
-  --color-cherry-dark: #630035;
-  --color-cherry-light: #B01066;
-  --color-cherry-glow: rgba(137, 1, 73, 0.22);
-  --color-alabaster: #F3F3E7;
-  --color-alabaster-card: #FFFFFF;
-  --color-alabaster-surface: #FAF9F3;
-  --color-alabaster-border: #E5E5D8;
-  --color-alabaster-dark: #E2E2D4;
+  --color-royal-blue: #014BAA;
+  --color-royal-blue-dark: #01357A;
+  --color-royal-blue-light: #1E6BEB;
+  --color-royal-blue-glow: rgba(1, 75, 170, 0.22);
+  --color-light-cream: #F8F3F0;
+  --color-light-cream-card: #FFFFFF;
+  --color-light-cream-surface: #FAF7F5;
+  --color-light-cream-border: #EAE3DD;
+  --color-light-cream-dark: #DFD7D0;
 }
 
 @layer base {
   :root {
-    --color-cherry: #890149;
-    --color-cherry-dark: #630035;
-    --color-cherry-light: #B01066;
-    --color-cherry-glow: rgba(137, 1, 73, 0.22);
-    --color-alabaster: #F3F3E7;
-    --color-alabaster-card: #FFFFFF;
-    --color-alabaster-surface: #FAF9F3;
-    --color-border: #E5E5D8;
-    --color-text-main: #1E161C;
-    --color-text-muted: #5C4E57;
+    --color-royal-blue: #014BAA;
+    --color-royal-blue-dark: #01357A;
+    --color-royal-blue-light: #1E6BEB;
+    --color-royal-blue-glow: rgba(1, 75, 170, 0.22);
+    --color-light-cream: #F8F3F0;
+    --color-light-cream-card: #FFFFFF;
+    --color-light-cream-surface: #FAF7F5;
+    --color-border: #EAE3DD;
+    --color-text-main: #1A1512;
+    --color-text-muted: #61554E;
   }
 
   body {
     margin: 0;
     padding: 0;
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background-color: #F3F3E7;
-    color: #1E161C;
+    background-color: #F8F3F0;
+    color: #1A1512;
     min-height: 100vh;
     overflow-x: hidden;
   }
@@ -39,7 +39,7 @@
 
 /* Background Medical Dot Matrix Pattern */
 .bg-medical-grid {
-  background-image: radial-gradient(rgba(137, 1, 73, 0.08) 1.2px, transparent 1.2px);
+  background-image: radial-gradient(rgba(1, 75, 170, 0.08) 1.2px, transparent 1.2px);
   background-size: 26px 26px;
 }
 
@@ -70,23 +70,23 @@
   animation: float-reverse 18s ease-in-out infinite;
 }
 
-/* Custom Scrollbar styled in Cherry */
+/* Custom Scrollbar styled in Royal Blue */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #EAEAE0;
+  background: #F0EAE5;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #C8B8C0;
+  background: #D4C9C2;
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #890149;
+  background: #014BAA;
 }
 
 /* Status Pulse Animation */

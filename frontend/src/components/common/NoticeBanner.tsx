@@ -14,21 +14,21 @@ export const NoticeBanner: React.FC<NoticeBannerProps> = ({
 }) => {
   if (type === 'stage1') {
     return (
-      <div className="relative overflow-hidden rounded-xl border border-[#890149]/20 bg-white/90 p-4 shadow-sm backdrop-blur-sm">
+      <div className="relative overflow-hidden rounded-xl border border-[#014BAA]/20 bg-white/90 p-4 shadow-sm backdrop-blur-sm">
         <div className="flex items-start gap-3">
-          <div className="mt-0.5 rounded-lg bg-[#890149]/10 p-1.5 text-[#890149]">
+          <div className="mt-0.5 rounded-lg bg-[#014BAA]/10 p-1.5 text-[#014BAA]">
             <CheckCircle2 className="h-5 w-5" />
           </div>
           <div className="flex-1">
             <div className="flex items-center gap-2">
-              <h4 className="text-sm font-bold tracking-tight text-[#890149]">
+              <h4 className="text-sm font-bold tracking-tight text-[#014BAA]">
                 {title || 'MediVision AI • Research Intelligence Operational'}
               </h4>
-              <span className="rounded-full bg-[#890149]/10 px-2 py-0.5 text-[10px] font-bold text-[#890149] uppercase tracking-wider">
+              <span className="rounded-full bg-[#014BAA]/10 px-2 py-0.5 text-[10px] font-bold text-[#014BAA] uppercase tracking-wider">
                 Clinical Integrity
               </span>
             </div>
-            <p className="mt-1 text-xs leading-relaxed text-[#5C4E57]">
+            <p className="mt-1 text-xs leading-relaxed text-[#61554E]">
               {message ||
                 'This platform is configured for multi-modal medical AI research. In accordance with clinical protocols, untrained models strictly report NOT TRAINED without generating fabricated predictions.'}
             </p>
@@ -53,12 +53,12 @@ export const NoticeBanner: React.FC<NoticeBannerProps> = ({
   }
 
   return (
-    <div className="rounded-xl border border-[#890149]/20 bg-white/80 p-4 text-[#1E161C] shadow-xs">
+    <div className="rounded-xl border border-[#014BAA]/20 bg-white/80 p-4 text-[#1A1512] shadow-xs">
       <div className="flex items-start gap-3">
-        <Info className="h-5 w-5 text-[#890149] shrink-0 mt-0.5" />
+        <Info className="h-5 w-5 text-[#014BAA] shrink-0 mt-0.5" />
         <div>
-          <h4 className="text-sm font-bold text-[#890149]">{title}</h4>
-          <p className="mt-1 text-xs text-[#5C4E57]">{message}</p>
+          <h4 className="text-sm font-bold text-[#014BAA]">{title}</h4>
+          <p className="mt-1 text-xs text-[#61554E]">{message}</p>
         </div>
       </div>
     </div>

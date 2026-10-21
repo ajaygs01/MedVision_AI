@@ -39,18 +39,18 @@ export const ModelStatusGrid: React.FC<ModelStatusGridProps> = ({
     <div className="space-y-4">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
         <div>
-          <h3 className="text-base font-bold text-[#1E161C] tracking-tight flex items-center gap-2">
-            <Layers className="h-5 w-5 text-[#890149]" />
+          <h3 className="text-base font-bold text-[#1A1512] tracking-tight flex items-center gap-2">
+            <Layers className="h-5 w-5 text-[#014BAA]" />
             AI Research Pipelines & Architecture Status
           </h3>
-          <p className="text-xs text-[#5C4E57]">
-            Real-time status synced with FastAPI endpoint <code className="text-[#890149] font-semibold">/api/models/status</code>
+          <p className="text-xs text-[#61554E]">
+            Real-time status synced with FastAPI endpoint <code className="text-[#014BAA] font-semibold">/api/models/status</code>
           </p>
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-[11px] text-[#890149] bg-[#890149]/10 border border-[#890149]/25 px-3 py-1 rounded-full flex items-center gap-1.5 font-bold">
-            <ShieldAlert className="h-3.5 w-3.5 text-[#890149]" />
+          <span className="text-[11px] text-[#014BAA] bg-[#014BAA]/10 border border-[#014BAA]/25 px-3 py-1 rounded-full flex items-center gap-1.5 font-bold">
+            <ShieldAlert className="h-3.5 w-3.5 text-[#014BAA]" />
             Weights Integrity Guard Active
           </span>
         </div>
@@ -64,20 +64,20 @@ export const ModelStatusGrid: React.FC<ModelStatusGridProps> = ({
           return (
             <div
               key={key}
-              className="rounded-2xl border border-[#E5E5D8] bg-white/95 p-5 flex flex-col justify-between hover:border-[#890149]/50 hover:shadow-md transition-all group"
+              className="rounded-2xl border border-[#EAE3DD] bg-white/95 p-5 flex flex-col justify-between hover:border-[#014BAA]/50 hover:shadow-md transition-all group"
             >
               <div>
                 {/* Header: Icon, Name, and Status */}
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex items-center gap-3">
-                    <div className="p-2.5 rounded-xl bg-[#890149]/10 text-[#890149] border border-[#890149]/20 group-hover:bg-[#890149] group-hover:text-[#F3F3E7] transition-all">
+                    <div className="p-2.5 rounded-xl bg-[#014BAA]/10 text-[#014BAA] border border-[#014BAA]/20 group-hover:bg-[#014BAA] group-hover:text-[#F8F3F0] transition-all">
                       <IconComponent className="h-5 w-5" />
                     </div>
                     <div>
-                      <h4 className="text-sm font-bold text-[#1E161C] group-hover:text-[#890149] transition-colors">
+                      <h4 className="text-sm font-bold text-[#1A1512] group-hover:text-[#014BAA] transition-colors">
                         {model.name}
                       </h4>
-                      <p className="text-[11px] text-[#890149] font-medium">{model.modality}</p>
+                      <p className="text-[11px] text-[#014BAA] font-medium">{model.modality}</p>
                     </div>
                   </div>
 
@@ -85,33 +85,33 @@ export const ModelStatusGrid: React.FC<ModelStatusGridProps> = ({
                 </div>
 
                 {/* Description */}
-                <p className="mt-3 text-xs text-[#5C4E57] leading-relaxed line-clamp-2">
+                <p className="mt-3 text-xs text-[#61554E] leading-relaxed line-clamp-2">
                   {model.description}
                 </p>
 
                 {/* Technical Specs Tags */}
-                <div className="mt-4 space-y-1.5 border-t border-[#F0F0E4] pt-3 text-[11px]">
+                <div className="mt-4 space-y-1.5 border-t border-[#F0EAE5] pt-3 text-[11px]">
                   <div className="flex items-center justify-between">
-                    <span className="text-[#7A6B74]">Training State:</span>
+                    <span className="text-[#7C6E66]">Training State:</span>
                     <span className="text-amber-700 font-bold font-mono text-[10px]">
                       NOT TRAINED (Weights Pending)
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-[#7A6B74]">Architecture:</span>
-                    <span className="text-[#1E161C] font-mono text-[10px] truncate max-w-[170px]" title={model.architecture}>
+                    <span className="text-[#7C6E66]">Architecture:</span>
+                    <span className="text-[#1A1512] font-mono text-[10px] truncate max-w-[170px]" title={model.architecture}>
                       {model.architecture}
                     </span>
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <span className="text-[#7A6B74]">Framework:</span>
-                    <span className="text-[#890149] font-mono text-[10px] font-semibold">{model.framework}</span>
+                    <span className="text-[#7C6E66]">Framework:</span>
+                    <span className="text-[#014BAA] font-mono text-[10px] font-semibold">{model.framework}</span>
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <span className="text-[#7A6B74]">Next Milestone:</span>
-                    <span className="text-[#5C4E57] text-[10px] truncate max-w-[170px]" title={model.next_stage}>
+                    <span className="text-[#7C6E66]">Next Milestone:</span>
+                    <span className="text-[#61554E] text-[10px] truncate max-w-[170px]" title={model.next_stage}>
                       {model.next_stage}
                     </span>
                   </div>
@@ -121,7 +121,7 @@ export const ModelStatusGrid: React.FC<ModelStatusGridProps> = ({
               {/* Action Button */}
               <button
                 onClick={() => onNavigateToWorkbench(mapping.tab)}
-                className="mt-4 w-full py-2 px-3 rounded-xl bg-[#F3F3E7] hover:bg-[#890149] hover:text-[#F3F3E7] border border-[#E5E5D8] hover:border-[#890149] text-xs font-bold text-[#1E161C] flex items-center justify-center gap-1.5 transition-all shadow-xs"
+                className="mt-4 w-full py-2 px-3 rounded-xl bg-[#F8F3F0] hover:bg-[#014BAA] hover:text-[#F8F3F0] border border-[#EAE3DD] hover:border-[#014BAA] text-xs font-bold text-[#1A1512] flex items-center justify-center gap-1.5 transition-all shadow-xs"
               >
                 <span>Open Research Workbench</span>
                 <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />

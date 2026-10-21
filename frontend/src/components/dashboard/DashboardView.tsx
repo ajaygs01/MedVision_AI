@@ -38,7 +38,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
       {/* Two Column Section: Benchmark Charts & Activity Feed */}
       <div className="space-y-6">
         <div>
-          <h3 className="text-base font-semibold text-white tracking-tight mb-3">
+          <h3 className="text-base font-bold text-[#1A1512] tracking-tight mb-3">
             Target Pre-Training Benchmarks & Roadmaps
           </h3>
           <SampleCharts />

@@ -118,18 +118,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const categories = Array.from(new Set(NAV_ITEMS.map((item) => item.category)));
 
   return (
-    <aside className="w-64 bg-gradient-to-b from-[#890149] via-[#780140] to-[#59002E] text-[#F3F3E7] flex flex-col h-screen shrink-0 sticky top-0 select-none shadow-xl border-r border-[#6E013A] z-20">
+    <aside className="w-64 bg-gradient-to-b from-[#014BAA] via-[#013C88] to-[#01285E] text-[#F8F3F0] flex flex-col h-screen shrink-0 sticky top-0 select-none shadow-xl border-r border-[#01357A] z-20">
       {/* Brand Header */}
       <div className="p-5 border-b border-white/10 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-xl bg-[#F3F3E7] flex items-center justify-center text-[#890149] font-bold shadow-md shadow-black/20">
-            <Activity className="h-6 w-6 text-[#890149]" />
+          <div className="h-10 w-10 rounded-xl bg-[#F8F3F0] flex items-center justify-center text-[#014BAA] font-bold shadow-md shadow-black/20">
+            <Activity className="h-6 w-6 text-[#014BAA]" />
           </div>
           <div>
-            <h1 className="font-bold text-base tracking-tight text-[#F3F3E7] flex items-center gap-1.5">
-              MediVision <span className="text-[#F3F3E7]/90 font-light">AI</span>
+            <h1 className="font-bold text-base tracking-tight text-[#F8F3F0] flex items-center gap-1.5">
+              MediVision <span className="text-[#F8F3F0]/90 font-light">AI</span>
             </h1>
-            <p className="text-[10px] text-[#F3F3E7]/70 font-semibold tracking-wider uppercase">
+            <p className="text-[10px] text-[#F8F3F0]/70 font-semibold tracking-wider uppercase">
               Clinical Research Platform
             </p>
           </div>
@@ -140,7 +140,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-5">
         {categories.map((category) => (
           <div key={category} className="space-y-1">
-            <h3 className="px-3 text-[10px] font-bold tracking-wider text-[#F3F3E7]/60 uppercase">
+            <h3 className="px-3 text-[10px] font-bold tracking-wider text-[#F8F3F0]/60 uppercase">
               {category}
             </h3>
             <div className="mt-1 space-y-0.5">
@@ -154,14 +154,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     onClick={() => onSelectTab(item.id)}
                     className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs transition-all duration-150 group ${
                       isActive
-                        ? 'bg-[#F3F3E7] text-[#890149] font-bold shadow-md shadow-black/15 translate-x-1'
-                        : 'text-[#F3F3E7]/85 hover:text-white hover:bg-white/10 font-medium'
+                        ? 'bg-[#F8F3F0] text-[#014BAA] font-bold shadow-md shadow-black/15 translate-x-1'
+                        : 'text-[#F8F3F0]/85 hover:text-white hover:bg-white/10 font-medium'
                     }`}
                   >
                     <div className="flex items-center gap-2.5 truncate">
                       <Icon
                         className={`h-4 w-4 shrink-0 transition-colors ${
-                          isActive ? 'text-[#890149]' : 'text-[#F3F3E7]/75 group-hover:text-white'
+                          isActive ? 'text-[#014BAA]' : 'text-[#F8F3F0]/75 group-hover:text-white'
                         }`}
                       />
                       <span className="truncate">{item.label}</span>
@@ -172,14 +172,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
                         <span
                           className={`text-[9px] px-1.5 py-0.5 rounded tracking-wide font-semibold ${
                             isActive
-                              ? 'bg-[#890149]/15 text-[#890149]'
-                              : 'bg-white/15 text-[#F3F3E7]/90 group-hover:bg-white/20'
+                              ? 'bg-[#014BAA]/15 text-[#014BAA]'
+                              : 'bg-white/15 text-[#F8F3F0]/90 group-hover:bg-white/20'
                           }`}
                         >
                           {item.badge}
                         </span>
                       )}
-                      {isActive && <ChevronRight className="h-3 w-3 text-[#890149]" />}
+                      {isActive && <ChevronRight className="h-3 w-3 text-[#014BAA]" />}
                     </div>
                   </button>
                 );
@@ -192,7 +192,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       {/* System Status Footer */}
       <div className="p-3 border-t border-white/10 bg-black/20 space-y-2">
         <div className="flex items-center justify-between text-[11px] px-2.5 py-1.5 rounded-lg bg-black/20 border border-white/10">
-          <span className="text-[#F3F3E7]/90 flex items-center gap-1.5">
+          <span className="text-[#F8F3F0]/90 flex items-center gap-1.5">
             <span
               className={`w-2 h-2 rounded-full ${
                 backendOnline ? 'bg-emerald-400 animate-status-pulse' : 'bg-rose-400'
@@ -206,11 +206,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
 
         <div className="flex items-center justify-between text-[11px] px-2.5 py-1.5 rounded-lg bg-black/20 border border-white/10">
-          <span className="text-[#F3F3E7]/90 flex items-center gap-1.5">
-            <Database className="h-3 w-3 text-[#F3F3E7]/70" />
+          <span className="text-[#F8F3F0]/90 flex items-center gap-1.5">
+            <Database className="h-3 w-3 text-[#F8F3F0]/70" />
             MongoDB
           </span>
-          <span className="text-[#F3F3E7]/75 font-mono text-[10px] truncate max-w-[100px]">
+          <span className="text-[#F8F3F0]/75 font-mono text-[10px] truncate max-w-[100px]">
             {dbStatus === 'connected' ? 'Atlas Connected' : 'Unconfigured'}
           </span>
         </div>

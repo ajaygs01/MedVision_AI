@@ -33,8 +33,8 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, label, pulse =
       case 'info':
       default:
         return {
-          bg: 'bg-[#890149]/10 border-[#890149]/25 text-[#890149] font-semibold',
-          dot: 'bg-[#890149]',
+          bg: 'bg-[#014BAA]/10 border-[#014BAA]/25 text-[#014BAA] font-semibold',
+          dot: 'bg-[#014BAA]',
           defaultText: 'Information',
         };
     }

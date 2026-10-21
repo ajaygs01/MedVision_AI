@@ -14,11 +14,11 @@ import {
 import { AlertCircle, BarChart3, Database } from 'lucide-react';
 
 const DATASET_DISTRIBUTION = [
-  { name: 'Chest X-ray', targetSamples: 29684, currentIngested: 29684, color: '#890149' },
-  { name: 'Brain MRI', targetSamples: 48000, currentIngested: 0, color: '#A0155A' },
-  { name: 'Skin Lesion', targetSamples: 33000, currentIngested: 0, color: '#B8286C' },
-  { name: 'YOLO Lesions', targetSamples: 25000, currentIngested: 0, color: '#CC3D7E' },
-  { name: 'Clinical EHR', targetSamples: 60000, currentIngested: 0, color: '#E05391' },
+  { name: 'Chest X-ray', targetSamples: 29684, currentIngested: 29684, color: '#014BAA' },
+  { name: 'Brain MRI', targetSamples: 48000, currentIngested: 0, color: '#0E5CC7' },
+  { name: 'Skin Lesion', targetSamples: 33000, currentIngested: 0, color: '#2574DF' },
+  { name: 'YOLO Lesions', targetSamples: 25000, currentIngested: 0, color: '#4B8DF0' },
+  { name: 'Clinical EHR', targetSamples: 60000, currentIngested: 0, color: '#7DAEF7' },
 ];
 
 const TARGET_BENCHMARK_MILESTONES = [
@@ -32,29 +32,29 @@ export const SampleCharts: React.FC = () => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
       {/* Chart 1: Projected Dataset Volume */}
-      <div className="rounded-2xl border border-[#E5E5D8] bg-white/95 p-5 relative overflow-hidden backdrop-blur-sm shadow-sm">
+      <div className="rounded-2xl border border-[#EAE3DD] bg-white/95 p-5 relative overflow-hidden backdrop-blur-sm shadow-sm">
         <div className="flex items-start justify-between gap-2 mb-3">
           <div>
             <div className="flex items-center gap-2">
-              <Database className="h-4 w-4 text-[#890149]" />
-              <h3 className="text-sm font-bold text-[#1E161C] tracking-tight">
+              <Database className="h-4 w-4 text-[#014BAA]" />
+              <h3 className="text-sm font-bold text-[#1A1512] tracking-tight">
                 Dataset Capacity & Intake Targets
               </h3>
             </div>
-            <p className="text-xs text-[#5C4E57] mt-0.5">
+            <p className="text-xs text-[#61554E] mt-0.5">
               RSNA Pneumonia verified (29,684 DICOM images ready)
             </p>
           </div>
 
-          <span className="shrink-0 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#890149]/10 border border-[#890149]/25 text-[#890149]">
+          <span className="shrink-0 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#014BAA]/10 border border-[#014BAA]/25 text-[#014BAA]">
             Stage 2
           </span>
         </div>
 
         {/* Notice tag inside the chart card */}
-        <div className="mb-4 p-2.5 rounded-xl bg-[#F3F3E7] border border-[#E5E5D8] text-[11px] text-[#5C4E57] flex items-center gap-2">
-          <AlertCircle className="h-3.5 w-3.5 text-[#890149] shrink-0" />
-          <span>RSNA dataset verified in <code className="font-mono text-[#890149]">datasets/rsna_pneumonia</code>.</span>
+        <div className="mb-4 p-2.5 rounded-xl bg-[#F8F3F0] border border-[#EAE3DD] text-[11px] text-[#61554E] flex items-center gap-2">
+          <AlertCircle className="h-3.5 w-3.5 text-[#014BAA] shrink-0" />
+          <span>RSNA dataset verified in <code className="font-mono text-[#014BAA]">datasets/rsna_pneumonia</code>.</span>
         </div>
 
         <div className="h-64 w-full">
@@ -63,25 +63,25 @@ export const SampleCharts: React.FC = () => {
               <CartesianGrid strokeDasharray="3 3" stroke="#EFEFE6" vertical={false} />
               <XAxis
                 dataKey="name"
-                stroke="#7A6B74"
+                stroke="#7C6E66"
                 fontSize={11}
                 tickLine={false}
-                axisLine={{ stroke: '#E5E5D8' }}
+                axisLine={{ stroke: '#EAE3DD' }}
               />
               <YAxis
-                stroke="#7A6B74"
+                stroke="#7C6E66"
                 fontSize={11}
                 tickLine={false}
-                axisLine={{ stroke: '#E5E5D8' }}
+                axisLine={{ stroke: '#EAE3DD' }}
                 tickFormatter={(val) => `${val / 1000}k`}
               />
               <Tooltip
                 contentStyle={{
                   backgroundColor: '#FFFFFF',
-                  borderColor: '#E5E5D8',
+                  borderColor: '#EAE3DD',
                   borderRadius: '0.75rem',
                   fontSize: '12px',
-                  color: '#1E161C',
+                  color: '#1A1512',
                   boxShadow: '0 4px 12px rgba(0,0,0,0.06)',
                 }}
                 formatter={(value: any) => [`${Number(value).toLocaleString()} samples`, 'Volume']}
@@ -95,34 +95,34 @@ export const SampleCharts: React.FC = () => {
           </ResponsiveContainer>
         </div>
 
-        <p className="mt-2 text-[10px] text-[#7A6B74] text-center font-mono">
+        <p className="mt-2 text-[10px] text-[#7C6E66] text-center font-mono">
           * Architectural reference capacity across clinical cohorts
         </p>
       </div>
 
       {/* Chart 2: Target Performance Roadmap */}
-      <div className="rounded-2xl border border-[#E5E5D8] bg-white/95 p-5 relative overflow-hidden backdrop-blur-sm shadow-sm">
+      <div className="rounded-2xl border border-[#EAE3DD] bg-white/95 p-5 relative overflow-hidden backdrop-blur-sm shadow-sm">
         <div className="flex items-start justify-between gap-2 mb-3">
           <div>
             <div className="flex items-center gap-2">
-              <BarChart3 className="h-4 w-4 text-[#890149]" />
-              <h3 className="text-sm font-bold text-[#1E161C] tracking-tight">
+              <BarChart3 className="h-4 w-4 text-[#014BAA]" />
+              <h3 className="text-sm font-bold text-[#1A1512] tracking-tight">
                 Model Evaluation AUROC Trajectory
               </h3>
             </div>
-            <p className="text-xs text-[#5C4E57] mt-0.5">
+            <p className="text-xs text-[#61554E] mt-0.5">
               Target validation AUROC progression across development phases
             </p>
           </div>
 
-          <span className="shrink-0 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#890149]/10 border border-[#890149]/25 text-[#890149]">
+          <span className="shrink-0 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#014BAA]/10 border border-[#014BAA]/25 text-[#014BAA]">
             Benchmark
           </span>
         </div>
 
         {/* Notice tag */}
-        <div className="mb-4 p-2.5 rounded-xl bg-[#F3F3E7] border border-[#E5E5D8] text-[11px] text-[#5C4E57] flex items-center gap-2">
-          <AlertCircle className="h-3.5 w-3.5 text-[#890149] shrink-0" />
+        <div className="mb-4 p-2.5 rounded-xl bg-[#F8F3F0] border border-[#EAE3DD] text-[11px] text-[#61554E] flex items-center gap-2">
+          <AlertCircle className="h-3.5 w-3.5 text-[#014BAA] shrink-0" />
           <span>Clinical integrity rule: Actual measured metrics will populate upon training completion.</span>
         </div>
 
@@ -132,26 +132,26 @@ export const SampleCharts: React.FC = () => {
               <CartesianGrid strokeDasharray="3 3" stroke="#EFEFE6" vertical={false} />
               <XAxis
                 dataKey="epoch"
-                stroke="#7A6B74"
+                stroke="#7C6E66"
                 fontSize={11}
                 tickLine={false}
-                axisLine={{ stroke: '#E5E5D8' }}
+                axisLine={{ stroke: '#EAE3DD' }}
               />
               <YAxis
-                stroke="#7A6B74"
+                stroke="#7C6E66"
                 fontSize={11}
                 tickLine={false}
-                axisLine={{ stroke: '#E5E5D8' }}
+                axisLine={{ stroke: '#EAE3DD' }}
                 domain={[40, 100]}
                 tickFormatter={(val) => `${val}%`}
               />
               <Tooltip
                 contentStyle={{
                   backgroundColor: '#FFFFFF',
-                  borderColor: '#E5E5D8',
+                  borderColor: '#EAE3DD',
                   borderRadius: '0.75rem',
                   fontSize: '12px',
-                  color: '#1E161C',
+                  color: '#1A1512',
                   boxShadow: '0 4px 12px rgba(0,0,0,0.06)',
                 }}
                 formatter={(value: any) => [`${value}% AUROC`, 'Target Metric']}
@@ -159,16 +159,16 @@ export const SampleCharts: React.FC = () => {
               <Line
                 type="monotone"
                 dataKey="targetAUROC"
-                stroke="#890149"
+                stroke="#014BAA"
                 strokeWidth={3}
-                dot={{ fill: '#890149', r: 4 }}
-                activeDot={{ r: 6, fill: '#680037' }}
+                dot={{ fill: '#014BAA', r: 4 }}
+                activeDot={{ r: 6, fill: '#01357A' }}
               />
             </LineChart>
           </ResponsiveContainer>
         </div>
 
-        <p className="mt-2 text-[10px] text-[#7A6B74] text-center font-mono">
+        <p className="mt-2 text-[10px] text-[#7C6E66] text-center font-mono">
           * Target milestones only — zero fabricated values displayed
         </p>
       </div>
