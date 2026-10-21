@@ -40,9 +40,9 @@ class ChestXRayService:
     and performs validated inference on DICOM (.dcm) and standard images.
     """
 
-    def __init__(self, config: Optional[CNNConfig] = None):
+    def __init__(self, config: Optional[CNNConfig] = None, device: Optional[str] = "cpu"):
         self.config = config or default_config
-        self.device = self.config.get_device()
+        self.device = device or "cpu"
         self._model: Optional["torch.nn.Module"] = None
         self._is_loaded: bool = False
         self._transform = transforms.Compose([
@@ -63,11 +63,14 @@ class ChestXRayService:
         """Returns True if the model has been loaded into memory and is ready for inference."""
         return self._is_loaded and self._model is not None
 
-    def load_model(self) -> bool:
+    def load_model(self, device: Optional[str] = None) -> bool:
         """
         Loads the trained PyTorch ResNet-50 model into memory once at application startup.
         Safe against missing or unconfigured checkpoints (logs status without crashing).
         """
+        if device is not None:
+            self.device = device
+
         if not self.is_model_trained():
             logger.warning(
                 f"[ChestXRayService] Checkpoint not found at '{self.checkpoint_path}'. "

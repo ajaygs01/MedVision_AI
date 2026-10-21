@@ -36,9 +36,11 @@ class ChestXRayInferenceService:
     Maintains clean separation between trained model inference and untrained status.
     """
 
-    def __init__(self, config: Optional[CNNConfig] = None):
+    def __init__(self, config: Optional[CNNConfig] = None, device: Optional[str] = None):
         self.config = config or default_config
-        self.device = self.config.get_device()
+        self.device = device or self.config.get_device()
+        if self.device == "cuda" and (torch is None or not torch.cuda.is_available()):
+            self.device = "cpu"
         self._model: Optional["torch.nn.Module"] = None
         self._transform = get_transforms(self.config.img_size, is_train=False)
 
