@@ -118,9 +118,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const categories = Array.from(new Set(NAV_ITEMS.map((item) => item.category)));
 
   return (
-    <aside className="w-64 bg-gradient-to-b from-[#014BAA] via-[#013C88] to-[#01285E] text-[#F8F3F0] flex flex-col h-screen shrink-0 sticky top-0 select-none shadow-xl border-r border-[#01357A] z-20">
+    <aside className="w-64 bg-gradient-to-b from-[#014BAA] via-[#013C88] to-[#01285E] text-[#F8F3F0] flex flex-col h-screen shrink-0 sticky top-0 select-none shadow-xl border-r border-[#01357A] z-20 overflow-hidden">
       {/* Brand Header */}
-      <div className="p-5 border-b border-white/10 flex items-center justify-between">
+      <div className="p-5 border-b border-white/10 flex items-center justify-between shrink-0">
         <div className="flex items-center gap-3">
           <div className="h-10 w-10 rounded-xl bg-[#F8F3F0] flex items-center justify-center text-[#014BAA] font-bold shadow-md shadow-black/20">
             <Activity className="h-6 w-6 text-[#014BAA]" />
@@ -190,7 +190,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </nav>
 
       {/* System Status Footer */}
-      <div className="p-3 border-t border-white/10 bg-black/20 space-y-2">
+      <div className="p-3 border-t border-white/10 bg-black/20 space-y-2 shrink-0">
         <div className="flex items-center justify-between text-[11px] px-2.5 py-1.5 rounded-lg bg-black/20 border border-white/10">
           <span className="text-[#F8F3F0]/90 flex items-center gap-1.5">
             <span

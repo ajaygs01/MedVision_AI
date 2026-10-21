@@ -19,7 +19,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const dbConnected = health?.database?.status === 'connected';
 
   return (
-    <header className="h-16 bg-[#F8F3F0]/90 backdrop-blur-md border-b border-[#EAE3DD] px-6 flex items-center justify-between sticky top-0 z-30 shadow-xs">
+    <header className="h-16 bg-[#F8F3F0]/90 backdrop-blur-md border-b border-[#EAE3DD] px-6 flex items-center justify-between sticky top-0 z-30 shadow-xs shrink-0">
       {/* Left: View Breadcrumb & Stage Badge */}
       <div className="flex items-center gap-3">
         <h2 className="text-base font-bold text-[#1A1512] tracking-tight">

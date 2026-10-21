@@ -26,14 +26,17 @@
     --color-text-muted: #61554E;
   }
 
-  body {
+  html, body {
     margin: 0;
     padding: 0;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  body {
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     background-color: #F8F3F0;
     color: #1A1512;
-    min-height: 100vh;
-    overflow-x: hidden;
   }
 }
 

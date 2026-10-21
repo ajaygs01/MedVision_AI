@@ -114,7 +114,7 @@ export function App() {
   const dbStatus = health?.database?.status || 'disconnected';
 
   return (
-    <div className="flex min-h-screen bg-[#F8F3F0] text-[#1A1512] antialiased selection:bg-[#014BAA]/20 selection:text-[#014BAA] relative overflow-x-hidden">
+    <div className="flex h-screen w-full bg-[#F8F3F0] text-[#1A1512] antialiased selection:bg-[#014BAA]/20 selection:text-[#014BAA] relative overflow-hidden">
       {/* Background Ambient Aura Orbs & Medical Grid */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
         <div className="absolute -top-32 -right-32 w-[600px] h-[600px] rounded-full bg-[#014BAA]/12 blur-[130px] animate-float-slow" />
@@ -123,7 +123,7 @@ export function App() {
         <div className="absolute inset-0 bg-medical-grid opacity-60" />
       </div>
 
-      {/* Persistent Left Sidebar Navigation in Deep Royal Blue */}
+      {/* Persistent Left Sidebar Navigation in Deep Royal Blue - Fixed in place */}
       <Sidebar
         activeTab={activeTab}
         onSelectTab={setActiveTab}
@@ -132,8 +132,8 @@ export function App() {
       />
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0 relative z-10">
-        {/* Sticky Top Navigation Bar */}
+      <div className="flex-1 flex flex-col h-full min-w-0 overflow-hidden relative z-10">
+        {/* Sticky/Fixed Top Navigation Bar */}
         <Navbar
           currentTabName={TAB_TITLES[activeTab] || 'Dashboard'}
           health={health}
@@ -141,41 +141,43 @@ export function App() {
           onRefresh={() => loadSystemState(true)}
         />
 
-        {/* Dynamic Viewport Container */}
-        <main className="flex-1 p-6 md:p-8 max-w-7xl w-full mx-auto space-y-6">
-          {activeTab === 'dashboard' ? (
-            <DashboardView
-              health={health}
-              modelsStatus={modelsStatus}
-              onNavigateToWorkbench={(tab) => setActiveTab(tab)}
-            />
-          ) : activeTab === 'chest-xray' ? (
-            <ChestXRayWorkbench
-              onBackToDashboard={() => setActiveTab('dashboard')}
-              modelStatus={modelsStatus?.models?.cnn_chest_xray}
-            />
-          ) : (
-            <ModuleWorkbench
-              tabId={activeTab}
-              onBackToDashboard={() => setActiveTab('dashboard')}
-            />
-          )}
-
-          {/* Institutional Academic Footer */}
-          <footer className="mt-12 pt-6 border-t border-[#EAE3DD] text-center text-xs text-[#61554E] space-y-1">
-            <p className="font-semibold text-[#014BAA]">
-              MediVision AI • Final-Year Major Research Project • Multi-Disease Biomedical Intelligence
-            </p>
-            <p className="text-[11px] text-[#7C6E66]">
-              Strict Medical Integrity Safeguard: Predictive algorithms are research prototypes. No clinical diagnosis is executed without validated human verification.
-            </p>
-            {lastSyncTime && (
-              <p className="text-[10px] text-[#8A7B73] font-mono">
-                Telemetry synchronized at {lastSyncTime}
-              </p>
+        {/* Scrollable Viewport Container - Only this area scrolls! */}
+        <div className="flex-1 overflow-y-auto overflow-x-hidden">
+          <main className="p-6 md:p-8 max-w-7xl w-full mx-auto space-y-6">
+            {activeTab === 'dashboard' ? (
+              <DashboardView
+                health={health}
+                modelsStatus={modelsStatus}
+                onNavigateToWorkbench={(tab) => setActiveTab(tab)}
+              />
+            ) : activeTab === 'chest-xray' ? (
+              <ChestXRayWorkbench
+                onBackToDashboard={() => setActiveTab('dashboard')}
+                modelStatus={modelsStatus?.models?.cnn_chest_xray}
+              />
+            ) : (
+              <ModuleWorkbench
+                tabId={activeTab}
+                onBackToDashboard={() => setActiveTab('dashboard')}
+              />
             )}
-          </footer>
-        </main>
+
+            {/* Institutional Academic Footer */}
+            <footer className="mt-12 pt-6 border-t border-[#EAE3DD] text-center text-xs text-[#61554E] space-y-1">
+              <p className="font-semibold text-[#014BAA]">
+                MediVision AI • Final-Year Major Research Project • Multi-Disease Biomedical Intelligence
+              </p>
+              <p className="text-[11px] text-[#7C6E66]">
+                Strict Medical Integrity Safeguard: Predictive algorithms are research prototypes. No clinical diagnosis is executed without validated human verification.
+              </p>
+              {lastSyncTime && (
+                <p className="text-[10px] text-[#8A7B73] font-mono">
+                  Telemetry synchronized at {lastSyncTime}
+                </p>
+              )}
+            </footer>
+          </main>
+        </div>
       </div>
     </div>
   );
