@@ -1,9 +1,14 @@
 import argparse
 import json
 import logging
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, Optional
+
+_project_root = Path(__file__).resolve().parents[3]
+if str(_project_root) not in sys.path:
+    sys.path.insert(0, str(_project_root))
 
 import numpy as np
 
@@ -80,6 +85,7 @@ def compute_metrics(y_true: np.ndarray, y_probs: np.ndarray, threshold: float = 
 def run_evaluation(
     config: Optional[CNNConfig] = None,
     checkpoint_path: Optional[Path] = None,
+    max_samples: Optional[int] = None,
 ) -> Dict:
     """
     Runs model evaluation on the held-out test split using the trained checkpoint.
@@ -117,6 +123,10 @@ def run_evaluation(
         test_ratio=cfg.test_ratio,
         seed=cfg.seed,
     )
+
+    if max_samples and max_samples > 0:
+        logger.info(f"Subsetting test set to first {max_samples} samples for rapid evaluation.")
+        test_df = test_df.iloc[:max_samples]
 
     test_dataset = RSNAPneumoniaDataset(
         test_df, cfg.images_dir_path, transform=get_transforms(cfg.img_size, is_train=False)
@@ -192,6 +202,7 @@ def main():
     parser.add_argument("--checkpoint", type=str, default="", help="Path to checkpoint .pth")
     parser.add_argument("--batch-size", "--batch_size", type=int, default=32, help="Batch size")
     parser.add_argument("--data-dir", "--data_dir", type=str, default="datasets/rsna_pneumonia", help="Path to RSNA dataset directory")
+    parser.add_argument("--limit", "--max-samples", "--max_samples", dest="limit", type=int, default=None, help="Limit number of test samples to evaluate")
     args = parser.parse_args()
 
     cfg = CNNConfig(
@@ -199,7 +210,7 @@ def main():
         batch_size=args.batch_size,
     )
     ckpt = Path(args.checkpoint) if args.checkpoint else cfg.checkpoint_path
-    run_evaluation(cfg, ckpt)
+    run_evaluation(cfg, ckpt, max_samples=args.limit)
 
 
 if __name__ == "__main__":

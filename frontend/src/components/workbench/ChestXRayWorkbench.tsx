@@ -163,7 +163,7 @@ export function ChestXRayWorkbench({
               Model Status: NOT TRAINED — Clinical Diagnostic Integrity Safeguard
             </h4>
             <p className="text-xs text-amber-800 leading-relaxed">
-              No trained weights file (<code className="bg-amber-100 px-1.5 py-0.5 rounded font-mono text-[11px] text-amber-900">model_artifacts/chest_xray_cnn/best_model.pth</code>) has been loaded into the inference engine.
+              No trained weights file (<code className="bg-amber-100 px-1.5 py-0.5 rounded font-mono text-[11px] text-amber-900">backend/model_artifacts/chest_xray/resnet50_best.pth</code>) has been loaded into the inference engine.
               In accordance with medical AI safety protocols, <strong>no fabricated confidence values or mock predictions are ever generated</strong>.
               The RSNA dataset is now verified in <code className="bg-amber-100 px-1.5 py-0.5 rounded font-mono text-[11px] text-amber-900">datasets/rsna_pneumonia/</code>. Execute the training pipeline to generate active weights.
             </p>
