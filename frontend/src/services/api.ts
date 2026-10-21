@@ -1,10 +1,21 @@
 import type { HealthResponse, ModelsStatusResponse, ChestXRayClassifyResponse } from '../types';
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || '';
+const RAW_API_BASE = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/+$/, '');
+
+export function getApiUrl(endpoint: string): string {
+  const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+  if (!RAW_API_BASE) {
+    return cleanEndpoint;
+  }
+  if (RAW_API_BASE.endsWith('/api') && cleanEndpoint.startsWith('/api')) {
+    return `${RAW_API_BASE}${cleanEndpoint.slice(4)}`;
+  }
+  return `${RAW_API_BASE}${cleanEndpoint}`;
+}
 
 export async function fetchHealth(): Promise<{ data: HealthResponse | null; error: string | null }> {
   try {
-    const res = await fetch(`${API_BASE}/api/health`, {
+    const res = await fetch(getApiUrl('/api/health'), {
       headers: {
         Accept: 'application/json',
       },
@@ -23,14 +34,14 @@ export async function fetchHealth(): Promise<{ data: HealthResponse | null; erro
     const message = err instanceof Error ? err.message : 'Unknown network error';
     return {
       data: null,
-      error: `Backend unreachable (${message}). Verify FastAPI server is running on port 8000.`,
+      error: `Backend unreachable (${message}). Verify FastAPI server is running on port 8001.`,
     };
   }
 }
 
 export async function fetchModelsStatus(): Promise<{ data: ModelsStatusResponse | null; error: string | null }> {
   try {
-    const res = await fetch(`${API_BASE}/api/models/status`, {
+    const res = await fetch(getApiUrl('/api/models/status'), {
       headers: {
         Accept: 'application/json',
       },
@@ -49,7 +60,7 @@ export async function fetchModelsStatus(): Promise<{ data: ModelsStatusResponse 
     const message = err instanceof Error ? err.message : 'Unknown network error';
     return {
       data: null,
-      error: `Unable to load model statuses (${message})`,
+      error: `Unable to load model statuses (${message}). Ensure backend server is running on port 8001.`,
     };
   }
 }
@@ -61,7 +72,7 @@ export async function classifyChestXRay(
     const formData = new FormData();
     formData.append('file', file);
 
-    const res = await fetch(`${API_BASE}/api/imaging/chest-xray/classify`, {
+    const res = await fetch(getApiUrl('/api/imaging/chest-xray/classify'), {
       method: 'POST',
       body: formData,
     });
@@ -71,7 +82,9 @@ export async function classifyChestXRay(
       try {
         const errorJson = await res.json();
         if (errorJson.detail) {
-          errorDetail = errorJson.detail;
+          errorDetail = typeof errorJson.detail === 'string'
+            ? errorJson.detail
+            : JSON.stringify(errorJson.detail);
         }
       } catch {
         // ignore json parsing error
@@ -85,7 +98,7 @@ export async function classifyChestXRay(
     const message = err instanceof Error ? err.message : 'Unknown network error';
     return {
       data: null,
-      error: `Classification request failed (${message}). Ensure backend server is running.`,
+      error: `Classification request failed (${message}). Ensure backend server is running on port 8001.`,
     };
   }
 }

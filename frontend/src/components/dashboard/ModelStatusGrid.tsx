@@ -81,7 +81,11 @@ export const ModelStatusGrid: React.FC<ModelStatusGridProps> = ({
                     </div>
                   </div>
 
-                  <StatusBadge status="untrained" label="NOT TRAINED" />
+                  {model.trained ? (
+                    <StatusBadge status="online" label="WEIGHTS LOADED" />
+                  ) : (
+                    <StatusBadge status="untrained" label="NOT TRAINED" />
+                  )}
                 </div>
 
                 {/* Description */}
@@ -93,9 +97,15 @@ export const ModelStatusGrid: React.FC<ModelStatusGridProps> = ({
                 <div className="mt-4 space-y-1.5 border-t border-[#F0EAE5] pt-3 text-[11px]">
                   <div className="flex items-center justify-between">
                     <span className="text-[#7C6E66]">Training State:</span>
-                    <span className="text-amber-700 font-bold font-mono text-[10px]">
-                      NOT TRAINED (Weights Pending)
-                    </span>
+                    {model.trained ? (
+                      <span className="text-emerald-700 font-bold font-mono text-[10px]">
+                        TRAINED (ResNet-50 Active)
+                      </span>
+                    ) : (
+                      <span className="text-amber-700 font-bold font-mono text-[10px]">
+                        NOT TRAINED (Weights Pending)
+                      </span>
+                    )}
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-[#7C6E66]">Architecture:</span>

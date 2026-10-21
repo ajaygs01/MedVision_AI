@@ -39,15 +39,21 @@ export const MetricCards: React.FC<MetricCardsProps> = ({ health, modelsStatus }
       <div className="rounded-2xl border border-[#EAE3DD] bg-white/95 p-5 relative overflow-hidden backdrop-blur-sm shadow-sm hover:shadow-md hover:border-[#014BAA]/40 transition-all group">
         <div className="flex items-center justify-between">
           <span className="text-xs font-semibold text-[#61554E]">Trained Models</span>
-          <div className="p-2 rounded-xl bg-amber-500/10 text-amber-700 border border-amber-500/20">
+          <div className={`p-2 rounded-xl border ${trainedCount > 0 ? 'bg-emerald-500/10 text-emerald-700 border-emerald-500/20' : 'bg-amber-500/10 text-amber-700 border-amber-500/20'}`}>
             <Cpu className="h-4 w-4" />
           </div>
         </div>
         <div className="mt-3">
           <div className="text-2xl font-black text-[#1A1512] tracking-tight">{trainedCount} Active</div>
-          <p className="mt-1 text-[11px] text-amber-700 font-medium flex items-center gap-1">
-            <AlertCircle className="h-3 w-3 inline" /> Checkpoint Pending
-          </p>
+          {trainedCount > 0 ? (
+            <p className="mt-1 text-[11px] text-emerald-700 font-medium flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 inline-block" /> ResNet-50 Checkpoint Active
+            </p>
+          ) : (
+            <p className="mt-1 text-[11px] text-amber-700 font-medium flex items-center gap-1">
+              <AlertCircle className="h-3 w-3 inline" /> Checkpoint Pending
+            </p>
+          )}
         </div>
         <div className="mt-3.5 pt-2.5 border-t border-[#F0EAE5] flex items-center justify-between text-[11px] text-[#61554E]">
           <span>Dataset Status</span>

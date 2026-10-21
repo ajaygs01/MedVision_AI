@@ -38,20 +38,70 @@ export function ChestXRayWorkbench({
   const [analysisError, setAnalysisError] = useState<string | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const activeRequestIdRef = useRef<number>(0);
 
   const isModelTrained = modelStatus?.trained === true;
 
   const handleFileChange = (file: File) => {
-    setSelectedFile(file);
+    // Invalidate any in-flight inference requests
+    activeRequestIdRef.current++;
+    setAnalyzing(false);
     setAnalysisResult(null);
     setAnalysisError(null);
 
-    const isDcm = file.name.toLowerCase().endsWith('.dcm') || file.type === 'application/dicom';
+    // Validate file extension
+    const nameLower = file.name.toLowerCase();
+    const isDcm = nameLower.endsWith('.dcm') || file.type === 'application/dicom';
+    const isPng = nameLower.endsWith('.png') || file.type === 'image/png';
+    const isJpg = nameLower.endsWith('.jpg') || nameLower.endsWith('.jpeg') || file.type === 'image/jpeg';
+
+    if (!isDcm && !isPng && !isJpg) {
+      setAnalysisError(`Unsupported file format "${file.name}". Please upload a supported Chest X-ray file: DICOM (.dcm), PNG (.png), or JPEG (.jpg, .jpeg).`);
+      setSelectedFile(null);
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+        setPreviewUrl(null);
+      }
+      setIsDicom(false);
+      return;
+    }
+
+    // Validate file size (25 MB max)
+    const MAX_SIZE_BYTES = 25 * 1024 * 1024;
+    if (file.size > MAX_SIZE_BYTES) {
+      setAnalysisError(`File size (${(file.size / (1024 * 1024)).toFixed(1)} MB) exceeds the 25 MB limit.`);
+      setSelectedFile(null);
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+        setPreviewUrl(null);
+      }
+      setIsDicom(false);
+      return;
+    }
+
+    if (file.size === 0) {
+      setAnalysisError('The selected file is empty (0 bytes). Please upload a valid radiograph image.');
+      setSelectedFile(null);
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+        setPreviewUrl(null);
+      }
+      setIsDicom(false);
+      return;
+    }
+
+    setSelectedFile(file);
     setIsDicom(isDcm);
 
     if (isDcm) {
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+      }
       setPreviewUrl(null);
     } else {
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+      }
       const url = URL.createObjectURL(file);
       setPreviewUrl(url);
     }
@@ -78,32 +128,44 @@ export function ChestXRayWorkbench({
   const handleAnalyze = async () => {
     if (!selectedFile) return;
 
+    const currentRequestId = ++activeRequestIdRef.current;
     setAnalyzing(true);
     setAnalysisError(null);
     setAnalysisResult(null);
 
     try {
       const response = await classifyChestXRay(selectedFile);
+      if (currentRequestId !== activeRequestIdRef.current) {
+        return; // Discard response from stale request
+      }
+
       if (response.data) {
         setAnalysisResult(response.data);
       } else {
         setAnalysisError(response.error || 'Inference request failed.');
       }
     } catch (err: unknown) {
+      if (currentRequestId !== activeRequestIdRef.current) {
+        return; // Discard error from stale request
+      }
       const message = err instanceof Error ? err.message : 'An unexpected error occurred during classification.';
       setAnalysisError(message);
     } finally {
-      setAnalyzing(false);
+      if (currentRequestId === activeRequestIdRef.current) {
+        setAnalyzing(false);
+      }
     }
   };
 
   const handleReset = () => {
+    activeRequestIdRef.current++;
     if (previewUrl) {
       URL.revokeObjectURL(previewUrl);
     }
     setSelectedFile(null);
     setPreviewUrl(null);
     setIsDicom(false);
+    setAnalyzing(false);
     setAnalysisResult(null);
     setAnalysisError(null);
     if (fileInputRef.current) {
@@ -362,29 +424,54 @@ export function ChestXRayWorkbench({
                       {/* Confidence bar */}
                       <div className="space-y-1.5">
                         <div className="flex justify-between text-xs">
-                          <span className="text-[#61554E]">Predicted Probability</span>
+                          <span className="text-[#61554E]">Predicted Probability (Sigmoid Output)</span>
                           <span className="font-mono font-bold text-[#1A1512]">
-                            {((analysisResult.confidence || 0) * 100).toFixed(2)}%
+                            {analysisResult.confidence !== null && analysisResult.confidence !== undefined
+                              ? `${(analysisResult.confidence * 100).toFixed(2)}%`
+                              : 'N/A'}
                           </span>
                         </div>
                         <div className="h-2 w-full rounded-full bg-[#EAE3DD] overflow-hidden">
                           <div
                             className={`h-full transition-all duration-500 ${
-                              (analysisResult.confidence || 0) > (analysisResult.threshold || 0.5)
+                              (analysisResult.confidence ?? 0) >= (analysisResult.threshold || 0.5)
                                 ? 'bg-gradient-to-r from-amber-500 to-[#014BAA]'
                                 : 'bg-gradient-to-r from-teal-500 to-emerald-600'
                             }`}
                             style={{
-                              width: `${Math.min(100, Math.max(0, (analysisResult.confidence || 0) * 100))}%`,
+                              width: `${Math.min(100, Math.max(0, (analysisResult.confidence ?? 0) * 100))}%`,
                             }}
                           />
                         </div>
+                        <p className="text-[10px] text-[#7C6E66]">
+                          * Sigmoid probability relative to decision threshold {analysisResult.threshold} (model score, not definitive clinical diagnosis).
+                        </p>
                       </div>
 
-                      {/* Threshold info */}
-                      <div className="flex justify-between text-[11px] text-[#61554E] pt-1 border-t border-[#EAE3DD]">
-                        <span>Classification Threshold: {analysisResult.threshold}</span>
-                        <span>File: {analysisResult.filename}</span>
+                      {/* Complete Response Fields Metadata */}
+                      <div className="space-y-1.5 text-[11px] text-[#61554E] pt-2 border-t border-[#EAE3DD]">
+                        <div className="flex justify-between items-center">
+                          <span className="text-[#7C6E66]">Inference Model:</span>
+                          <span className="font-mono font-semibold text-[#1A1512]">{analysisResult.model_name}</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-[#7C6E66]">Processed File:</span>
+                          <span className="font-mono text-[#1A1512] truncate max-w-[200px]" title={analysisResult.filename}>
+                            {analysisResult.filename} ({analysisResult.file_type})
+                          </span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-[#7C6E66]">Decision Threshold:</span>
+                          <span className="font-mono text-[#1A1512]">{analysisResult.threshold}</span>
+                        </div>
+                        {analysisResult.message && (
+                          <div className="flex justify-between items-center">
+                            <span className="text-[#7C6E66]">Execution Status:</span>
+                            <span className="font-mono text-emerald-700 font-medium truncate max-w-[200px]" title={analysisResult.message}>
+                              {analysisResult.message}
+                            </span>
+                          </div>
+                        )}
                       </div>
                     </div>
 

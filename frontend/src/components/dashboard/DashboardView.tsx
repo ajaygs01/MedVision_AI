@@ -19,11 +19,19 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 }) => {
   return (
     <div className="space-y-6">
-      {/* Platform Stage 1 Safeguard Banner */}
+      {/* Platform Stage Notice Banner */}
       <NoticeBanner
         type="stage1"
-        title="MediVision AI • Stage 1 Foundation Initialized"
-        message="Software engineering foundation, FastAPI service layer, and responsive UI operational. Model training pipelines, weights, and inference pipelines are deliberately not initialized in Stage 1."
+        title={
+          modelsStatus?.models?.cnn_chest_xray?.trained
+            ? 'MediVision AI • Stage 2 CNN Inference Pipeline Active'
+            : 'MediVision AI • Medical AI Research Platform'
+        }
+        message={
+          modelsStatus?.models?.cnn_chest_xray?.trained
+            ? 'ResNet-50 Chest X-ray classification engine is loaded with verified weights and ready for radiograph inference. Non-imaging and secondary pipelines remain in development.'
+            : 'Software engineering foundation and FastAPI service layer operational. Awaiting model checkpoint loading.'
+        }
       />
 
       {/* Summary Metric Cards */}
