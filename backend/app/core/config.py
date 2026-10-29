@@ -13,6 +13,10 @@ except ImportError:
     has_pydantic_settings = False
 
 
+from pathlib import Path
+_backend_env = Path(__file__).resolve().parents[2] / ".env"
+
+
 class Settings(BaseSettings):
     project_name: str = "MediVision AI Research Platform"
     version: str = "1.0.0-stage1"
@@ -32,15 +36,25 @@ class Settings(BaseSettings):
     mongodb_db_name: str = "medivision_ai"
     mongodb_connect_timeout_ms: int = 2500
 
+    # Brain MRI Model Configuration
+    brain_mri_experimental_mode: bool = Field(
+        default=False,
+        description="Explicit opt-in to load experimental 10p/3e Brain MRI prototype weights",
+    )
+    brain_mri_custom_checkpoint_path: str = Field(
+        default="",
+        description="Path to experimental checkpoint if overriding default custom_10p_3e/unet3d_best.pth",
+    )
+
     if has_pydantic_settings and SettingsConfigDict:
         model_config = SettingsConfigDict(
-            env_file=(".env", "../.env"),
+            env_file=(_backend_env, ".env", "backend/.env"),
             env_file_encoding="utf-8",
             extra="ignore",
         )
     else:
         class Config:
-            env_file = ".env"
+            env_file = str(_backend_env)
             extra = "ignore"
 
     def get_cors_origins(self) -> List[str]:

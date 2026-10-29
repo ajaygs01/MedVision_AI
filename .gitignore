@@ -46,10 +46,28 @@ datasets/*
 
 # ML Model Artifacts and Checkpoints
 model_artifacts/
+backend/model_artifacts/
 *.pth
 *.pt
 *.onnx
 *.bin
+*.joblib
+
+# Temporary runs, diagnostics, and scratch files
+runs/
+scratch/
+check_yolo_preflight.py
+diagnose_yolo_quality.py
+inspect_yolo_quality.py
+verify_yolo_artifacts.py
+
+# Archives and compressed datasets
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.rar
+*.7z
 
 # IDE & OS
 .vscode/

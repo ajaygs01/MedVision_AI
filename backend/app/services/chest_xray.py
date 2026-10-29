@@ -1,3 +1,4 @@
+import base64
 import io
 import logging
 import sys
@@ -178,6 +179,22 @@ class ChestXRayService:
             img = Image.open(io.BytesIO(file_bytes))
             return img.convert("RGB")
 
+    def generate_preview_data_url(self, pil_image: Image.Image, max_dim: int = 512) -> str:
+        """
+        Generates a lightweight, compressed base64 JPEG data URL
+        suitable for fast browser display and state persistence without heavy payloads.
+        """
+        try:
+            thumb = pil_image.copy()
+            thumb.thumbnail((max_dim, max_dim), Image.Resampling.LANCZOS)
+            buf = io.BytesIO()
+            thumb.save(buf, format="JPEG", quality=85)
+            b64_str = base64.b64encode(buf.getvalue()).decode("utf-8")
+            return f"data:image/jpeg;base64,{b64_str}"
+        except Exception as exc:
+            logger.warning(f"Could not generate image preview: {exc}")
+            return ""
+
     def predict(self, file_bytes: bytes, filename: str, threshold: float = 0.5) -> Dict:
         """
         Executes binary pneumonia classification on an uploaded radiograph.
@@ -196,7 +213,18 @@ class ChestXRayService:
                 "file_type": file_type,
                 "message": err_msg,
                 "disclaimer": RESEARCH_DISCLAIMER,
+                "image_preview": None,
+                "gradcam_preview": None,
             }
+
+        # Generate preview data URL from valid upload
+        try:
+            pil_image = self.process_image_bytes(file_bytes, filename)
+            preview_data_url = self.generate_preview_data_url(pil_image)
+        except Exception as exc:
+            logger.error(f"[ChestXRayService] Could not process image bytes: {exc}")
+            pil_image = None
+            preview_data_url = ""
 
         # Check if model is trained and loaded
         if not self.is_ready():
@@ -219,10 +247,14 @@ class ChestXRayService:
                     "The ResNet-50 CNN model must be trained or configured before inference."
                 ),
                 "disclaimer": RESEARCH_DISCLAIMER,
+                "image_preview": preview_data_url or None,
+                "gradcam_preview": None,
             }
 
         try:
-            pil_image = self.process_image_bytes(file_bytes, filename)
+            if pil_image is None:
+                pil_image = self.process_image_bytes(file_bytes, filename)
+                preview_data_url = self.generate_preview_data_url(pil_image)
 
             if self._transform is None:
                 raise RuntimeError("Torchvision image transform pipeline is uninitialized.")
@@ -237,6 +269,18 @@ class ChestXRayService:
             predicted_class = "Lung Opacity / Pneumonia" if has_opacity else "Normal / No Lung Opacity"
             predicted_class_id = 1 if has_opacity else 0
 
+            # Generate Explainable AI Grad-CAM saliency overlay and standalone heatmap
+            gradcam_url = None
+            heatmap_url = None
+            try:
+                from app.services.xai import xai_service
+                cam_res = xai_service.generate_chest_xray_gradcam(file_bytes, filename)
+                if cam_res.get("status") == "success":
+                    gradcam_url = cam_res.get("overlay_preview")
+                    heatmap_url = cam_res.get("heatmap_preview")
+            except Exception as cam_exc:
+                logger.warning(f"Grad-CAM generation skipped/failed: {cam_exc}")
+
             return {
                 "status": "success",
                 "model_name": "Chest X-ray ResNet50 Classifier",
@@ -248,6 +292,9 @@ class ChestXRayService:
                 "file_type": file_type,
                 "message": "Inference completed successfully using trained ResNet50 checkpoint.",
                 "disclaimer": RESEARCH_DISCLAIMER,
+                "image_preview": preview_data_url or None,
+                "gradcam_preview": gradcam_url,
+                "heatmap_preview": heatmap_url,
             }
         except Exception as exc:
             logger.error(f"[ChestXRayService] Inference failure on '{filename}': {exc}", exc_info=True)
@@ -261,6 +308,8 @@ class ChestXRayService:
                 "file_type": file_type,
                 "message": f"Inference execution failed: {str(exc)}",
                 "disclaimer": RESEARCH_DISCLAIMER,
+                "image_preview": preview_data_url or None,
+                "gradcam_preview": None,
             }
 
 

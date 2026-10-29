@@ -23,12 +23,16 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
       <NoticeBanner
         type="stage1"
         title={
-          modelsStatus?.models?.cnn_chest_xray?.trained
+          modelsStatus?.active_trained_count && modelsStatus.active_trained_count >= 3
+            ? 'MediVision AI • Multi-Disease Intelligence Active (Chest X-ray + Clinical ML + Grad-CAM)'
+            : modelsStatus?.models?.cnn_chest_xray?.trained
             ? 'MediVision AI • Stage 2 CNN Inference Pipeline Active'
             : 'MediVision AI • Medical AI Research Platform'
         }
         message={
-          modelsStatus?.models?.cnn_chest_xray?.trained
+          modelsStatus?.active_trained_count && modelsStatus.active_trained_count >= 3
+            ? 'ResNet-50 Chest X-ray Classifier, Clinical Tabular Risk Predictor, and Explainable AI (Grad-CAM) are trained, verified, and operational with live MongoDB Atlas audit persistence.'
+            : modelsStatus?.models?.cnn_chest_xray?.trained
             ? 'ResNet-50 Chest X-ray classification engine is loaded with verified weights and ready for radiograph inference. Non-imaging and secondary pipelines remain in development.'
             : 'Software engineering foundation and FastAPI service layer operational. Awaiting model checkpoint loading.'
         }

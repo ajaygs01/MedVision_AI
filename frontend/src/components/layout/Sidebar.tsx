@@ -11,7 +11,6 @@ import {
   BarChart3,
   History,
   Settings,
-  Activity,
   ChevronRight,
   Database,
 } from 'lucide-react';
@@ -22,6 +21,7 @@ interface SidebarProps {
   onSelectTab: (tab: NavTabId) => void;
   backendOnline: boolean;
   dbStatus: string;
+  dbDetails?: string;
 }
 
 interface NavItem {
@@ -43,14 +43,14 @@ const NAV_ITEMS: NavItem[] = [
     id: 'chest-xray',
     label: 'Chest X-ray Analysis',
     icon: FileHeart,
-    badge: 'Stage 2',
+    badge: 'Active',
     category: 'Imaging Modalities',
   },
   {
     id: 'brain-mri',
     label: 'Brain MRI Analysis',
     icon: Brain,
-    badge: 'Stage 2',
+    badge: 'Active',
     category: 'Imaging Modalities',
   },
   {
@@ -64,21 +64,21 @@ const NAV_ITEMS: NavItem[] = [
     id: 'yolo-detection',
     label: 'YOLO Detection',
     icon: Crosshair,
-    badge: 'Stage 3',
+    badge: 'Active',
     category: 'Imaging Modalities',
   },
   {
     id: 'clinical-ml',
     label: 'Clinical ML',
     icon: TableProperties,
-    badge: 'Stage 3',
+    badge: 'Active',
     category: 'Predictive & Tabular',
   },
   {
     id: 'explainable-ai',
     label: 'Explainable AI',
     icon: Eye,
-    badge: 'Stage 4',
+    badge: 'Active',
     category: 'Interpretability & Copilot',
   },
   {
@@ -114,6 +114,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onSelectTab,
   backendOnline,
   dbStatus,
+  dbDetails,
 }) => {
   const categories = Array.from(new Set(NAV_ITEMS.map((item) => item.category)));
 
@@ -122,8 +123,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
       {/* Brand Header */}
       <div className="p-5 border-b border-white/10 flex items-center justify-between shrink-0">
         <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-xl bg-[#F8F3F0] flex items-center justify-center text-[#014BAA] font-bold shadow-md shadow-black/20">
-            <Activity className="h-6 w-6 text-[#014BAA]" />
+          <div className="h-10 w-10 rounded-xl overflow-hidden bg-white/10 p-0.5 border border-white/25 shadow-md shadow-black/20 shrink-0">
+            <img
+              src="/logo.png"
+              alt="MediVision AI Logo"
+              className="w-full h-full object-cover rounded-[10px]"
+            />
           </div>
           <div>
             <h1 className="font-bold text-base tracking-tight text-[#F8F3F0] flex items-center gap-1.5">
@@ -205,15 +210,32 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </span>
         </div>
 
-        <div className="flex items-center justify-between text-[11px] px-2.5 py-1.5 rounded-lg bg-black/20 border border-white/10">
-          <span className="text-[#F8F3F0]/90 flex items-center gap-1.5">
-            <Database className="h-3 w-3 text-[#F8F3F0]/70" />
-            MongoDB
-          </span>
-          <span className="text-[#F8F3F0]/75 font-mono text-[10px] truncate max-w-[100px]">
-            {dbStatus === 'connected' ? 'Atlas Connected' : 'Unconfigured'}
-          </span>
-        </div>
+        {(() => {
+          const isDbConnected = dbStatus === 'connected';
+          const isDbUnconfigured = !isDbConnected && (
+            (dbDetails || '').toLowerCase().includes('not configured') ||
+            (dbDetails || '').toLowerCase().includes('waiting for atlas')
+          );
+          const dbLabel = isDbConnected ? 'Atlas Connected' : isDbUnconfigured ? 'Unconfigured' : 'Disconnected';
+          const dbColor = isDbConnected ? 'text-emerald-300 font-semibold' : isDbUnconfigured ? 'text-amber-300' : 'text-rose-300';
+          const dbDotColor = isDbConnected ? 'bg-emerald-400' : isDbUnconfigured ? 'bg-amber-400' : 'bg-rose-400';
+
+          return (
+            <div
+              title={dbDetails || `MongoDB: ${dbLabel}`}
+              className="flex items-center justify-between text-[11px] px-2.5 py-1.5 rounded-lg bg-black/20 border border-white/10"
+            >
+              <span className="text-[#F8F3F0]/90 flex items-center gap-1.5">
+                <span className={`w-2 h-2 rounded-full ${dbDotColor}`} />
+                <Database className="h-3 w-3 text-[#F8F3F0]/70" />
+                MongoDB
+              </span>
+              <span className={`${dbColor} font-mono text-[10px] truncate max-w-[100px]`}>
+                {dbLabel}
+              </span>
+            </div>
+          );
+        })()}
       </div>
     </aside>
   );

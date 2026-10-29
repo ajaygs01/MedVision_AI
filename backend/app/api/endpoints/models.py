@@ -3,7 +3,12 @@ import sys
 from pathlib import Path
 from fastapi import APIRouter
 from app.schemas.status import ModelItemStatus, ModelsStatusResponse
+from app.services.brain_mri import brain_mri_service
 from app.services.chest_xray import chest_xray_service
+from app.services.clinical_ml import clinical_ml_service
+from app.services.skin_lesion import skin_lesion_service
+from app.services.xai import xai_service
+from app.services.yolo import yolo_service
 
 router = APIRouter(tags=["Model Status"])
 
@@ -104,6 +109,62 @@ async def get_models_status():
         models["cnn_chest_xray"].trained = False
         models["cnn_chest_xray"].weights_path = None
 
+    # Dynamically inspect Brain MRI 3D U-Net status
+    if brain_mri_service.is_ready():
+        models["unet_brain_mri"].status = "ready"
+        models["unet_brain_mri"].trained = True
+        models["unet_brain_mri"].weights_path = str(brain_mri_service.checkpoint_path)
+        active_trained += 1
+    else:
+        mri_stat = brain_mri_service.get_status().get("status", "unconfigured")
+        models["unet_brain_mri"].status = mri_stat
+        models["unet_brain_mri"].trained = False
+        models["unet_brain_mri"].weights_path = None
+
+    # Dynamically inspect Clinical ML Random Forest model status
+    if clinical_ml_service.is_ready():
+        models["clinical_ml"].status = "ready"
+        models["clinical_ml"].trained = True
+        models["clinical_ml"].weights_path = "backend/model_artifacts/clinical_ml/random_forest_risk_model.joblib"
+        active_trained += 1
+    else:
+        models["clinical_ml"].status = "unconfigured"
+        models["clinical_ml"].trained = False
+        models["clinical_ml"].weights_path = None
+
+    # Dynamically inspect Explainable AI (XAI) Grad-CAM engine status
+    if xai_service.is_ready():
+        models["xai_engine"].status = "ready"
+        models["xai_engine"].trained = True
+        models["xai_engine"].weights_path = "ResNet-50 Layer4 Bottleneck Hooks"
+        active_trained += 1
+    else:
+        models["xai_engine"].status = "unconfigured"
+        models["xai_engine"].trained = False
+        models["xai_engine"].weights_path = None
+
+    # Dynamically inspect YOLO Lesion Detection status
+    if yolo_service.is_ready():
+        models["yolo_detection"].status = "ready"
+        models["yolo_detection"].trained = True
+        models["yolo_detection"].weights_path = str(yolo_service.checkpoint_path)
+        active_trained += 1
+    else:
+        models["yolo_detection"].status = "unconfigured"
+        models["yolo_detection"].trained = False
+        models["yolo_detection"].weights_path = None
+
+    # Dynamically inspect Skin Lesion Classifier status
+    if skin_lesion_service.is_ready():
+        models["cnn_skin_lesion"].status = "ready"
+        models["cnn_skin_lesion"].trained = True
+        models["cnn_skin_lesion"].weights_path = str(skin_lesion_service.checkpoint_path)
+        active_trained += 1
+    else:
+        models["cnn_skin_lesion"].status = "unconfigured"
+        models["cnn_skin_lesion"].trained = False
+        models["cnn_skin_lesion"].weights_path = None
+
     return ModelsStatusResponse(
         stage=2,
         system_status="stage2_pipeline_active",
@@ -111,7 +172,7 @@ async def get_models_status():
         active_trained_count=active_trained,
         models=models,
         disclaimer=(
-            "Stage 2 Chest X-ray pipeline implemented. Results are academic research prototypes "
-            "and must not be used as standalone clinical diagnoses."
+            "Stage 2 Chest X-ray and Clinical ML pipelines active with XAI Grad-CAM attribution. "
+            "Results are academic research prototypes and must not be used as standalone clinical diagnoses."
         ),
     )

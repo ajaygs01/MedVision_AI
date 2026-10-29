@@ -17,6 +17,32 @@ export const Navbar: React.FC<NavbarProps> = ({
 }) => {
   const isOnline = health?.status === 'online';
   const dbConnected = health?.database?.status === 'connected';
+  const dbEngine = health?.database?.engine || 'MongoDB Atlas';
+  const dbDetails = health?.database?.details || '';
+  const isLocalFallback = dbConnected && dbEngine === 'Local MongoDB';
+  const isDbUnconfigured = !dbConnected && (
+    dbDetails.toLowerCase().includes('not configured') ||
+    dbDetails.toLowerCase().includes('waiting for atlas') ||
+    dbDetails.toLowerCase().includes('placeholder')
+  );
+
+  const dbLabel = dbConnected
+    ? (isLocalFallback ? 'Local DB (Active)' : 'Atlas Connected')
+    : isDbUnconfigured
+      ? 'DB Unconfigured'
+      : 'DB Disconnected';
+
+  const dbColor = dbConnected
+    ? (isLocalFallback ? 'text-sky-700' : 'text-emerald-700')
+    : isDbUnconfigured
+      ? 'text-amber-700'
+      : 'text-rose-700';
+
+  const dbIconColor = dbConnected
+    ? (isLocalFallback ? 'text-sky-600' : 'text-emerald-600')
+    : isDbUnconfigured
+      ? 'text-amber-600'
+      : 'text-rose-600';
 
   return (
     <header className="h-16 bg-[#F8F3F0]/90 backdrop-blur-md border-b border-[#EAE3DD] px-6 flex items-center justify-between sticky top-0 z-30 shadow-xs shrink-0">
@@ -40,13 +66,13 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Database Status Indicator */}
         <div
-          title={health?.database?.details || 'Database connection status'}
-          className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-white/80 border border-[#EAE3DD] text-[11px] shadow-xs"
+          title={dbDetails || 'Database connection status'}
+          className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-white/80 border border-[#EAE3DD] text-[11px] shadow-xs cursor-help"
         >
-          <Database className={`h-3.5 w-3.5 ${dbConnected ? 'text-emerald-600' : 'text-amber-600'}`} />
+          <Database className={`h-3.5 w-3.5 ${dbIconColor}`} />
           <span className="text-[#61554E] hidden sm:inline">MongoDB:</span>
-          <span className={dbConnected ? 'text-emerald-700 font-semibold' : 'text-amber-700 font-semibold'}>
-            {dbConnected ? 'Atlas Connected' : 'Unconfigured'}
+          <span className={`${dbColor} font-semibold`}>
+            {dbLabel}
           </span>
         </div>
 

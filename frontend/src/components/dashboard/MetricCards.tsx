@@ -85,25 +85,31 @@ export const MetricCards: React.FC<MetricCardsProps> = ({ health, modelsStatus }
         </div>
       </div>
 
-      {/* Metric 4: MongoDB Atlas */}
+      {/* Metric 4: MongoDB Atlas / Local MongoDB */}
       <div className="rounded-2xl border border-[#EAE3DD] bg-white/95 p-5 relative overflow-hidden backdrop-blur-sm shadow-sm hover:shadow-md hover:border-[#014BAA]/40 transition-all group">
         <div className="flex items-center justify-between">
           <span className="text-xs font-semibold text-[#61554E]">Database Layer</span>
-          <div className={`p-2 rounded-xl border ${dbConnected ? 'bg-emerald-500/10 text-emerald-700 border-emerald-500/20' : 'bg-[#014BAA]/10 text-[#014BAA] border-[#014BAA]/20'}`}>
+          <div className={`p-2 rounded-xl border ${dbConnected ? (health?.database?.engine === 'Local MongoDB' ? 'bg-sky-500/10 text-sky-700 border-sky-500/20' : 'bg-emerald-500/10 text-emerald-700 border-emerald-500/20') : 'bg-[#014BAA]/10 text-[#014BAA] border-[#014BAA]/20'}`}>
             <Database className="h-4 w-4" />
           </div>
         </div>
         <div className="mt-3">
           <div className="text-2xl font-black text-[#1A1512] tracking-tight">
-            {dbConnected ? 'Atlas Cluster' : 'Config Pending'}
+            {dbConnected
+              ? (health?.database?.engine === 'Local MongoDB' ? 'Local DB (Active)' : 'Atlas Cluster')
+              : (health?.database?.details || '').toLowerCase().includes('not configured') || (health?.database?.details || '').toLowerCase().includes('placeholder')
+                ? 'Config Pending'
+                : 'Disconnected'}
           </div>
           <p className="mt-1 text-[11px] text-[#61554E] truncate" title={health?.database?.details}>
-            {dbConnected ? 'Cloud replica connected' : 'MONGODB_URI pending in .env'}
+            {health?.database?.details || (dbConnected ? 'Database storage connected' : 'MONGODB_URI pending in .env')}
           </p>
         </div>
         <div className="mt-3.5 pt-2.5 border-t border-[#F0EAE5] flex items-center justify-between text-[11px] text-[#61554E]">
           <span>Storage Engine</span>
-          <span className="text-[#014BAA] font-bold font-mono text-[10px]">MongoDB Atlas</span>
+          <span className="text-[#014BAA] font-bold font-mono text-[10px]">
+            {health?.database?.engine || 'MongoDB Atlas'}
+          </span>
         </div>
       </div>
     </div>

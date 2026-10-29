@@ -23,7 +23,7 @@ async def test_health_endpoint():
     assert data["status"] == "online"
     assert data["version"] == "1.0.0-stage1"
     assert "database" in data
-    assert data["database"]["engine"] == "MongoDB Atlas"
+    assert data["database"]["engine"] in ["MongoDB Atlas", "Local MongoDB"]
     assert data["database"]["status"] in ["connected", "disconnected"]
 
 
@@ -35,7 +35,7 @@ async def test_models_status_endpoint():
     data = response.json()
     assert data["stage"] in [1, 2]
     assert data["system_status"] in ["foundation_ready", "stage2_pipeline_active", "stage_2_cnn_pipeline_ready"]
-    assert data["active_trained_count"] in [0, 1]
+    assert data["active_trained_count"] in [0, 1, 2, 3, 4, 5]
     assert "academic" in data["disclaimer"].lower() or "stage" in data["disclaimer"].lower()
 
     models = data["models"]
@@ -51,9 +51,12 @@ async def test_models_status_endpoint():
     for key in expected_keys:
         assert key in models, f"Model key '{key}' missing from models status"
         model_info = models[key]
-        if key == "cnn_chest_xray":
+        if key in ["cnn_chest_xray", "clinical_ml", "xai_engine", "yolo_detection", "cnn_skin_lesion"]:
             assert model_info["trained"] in [True, False]
-            assert model_info["status"] in ["ready", "unconfigured"]
+            assert model_info["status"] in ["ready", "unconfigured", "not_trained"]
+        elif key == "unet_brain_mri":
+            assert model_info["trained"] in [True, False]
+            assert model_info["status"] in ["ready", "dataset_missing", "not_trained", "unconfigured"]
         else:
             assert model_info["trained"] is False, f"Model '{key}' cannot be marked as trained"
             assert model_info["status"] == "unconfigured", f"Model '{key}' must be unconfigured"

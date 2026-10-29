@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 from fastapi import APIRouter
 from app.core.config import get_settings
-from app.db.mongodb import check_mongo_connection
+from app.db.mongodb import check_mongo_connection, get_active_mongo_engine
 from app.schemas.status import DatabaseStatus, HealthResponse
 
 router = APIRouter(tags=["System Health"])
@@ -14,7 +14,7 @@ async def get_health_status():
 
     db_status = DatabaseStatus(
         status="connected" if is_connected else "disconnected",
-        engine="MongoDB Atlas",
+        engine=get_active_mongo_engine(),
         details=details,
     )
 

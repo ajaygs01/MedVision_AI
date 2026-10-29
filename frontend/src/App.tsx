@@ -22,11 +22,27 @@ const TAB_TITLES: Record<NavTabId, string> = {
 };
 
 export function App() {
-  const [activeTab, setActiveTab] = useState<NavTabId>('dashboard');
+  const [activeTab, setActiveTab] = useState<NavTabId>(() => {
+    try {
+      const saved = sessionStorage.getItem('medivision_active_tab');
+      if (saved) return saved as NavTabId;
+    } catch {
+      // ignore
+    }
+    return 'dashboard';
+  });
   const [health, setHealth] = useState<HealthResponse | null>(null);
   const [modelsStatus, setModelsStatus] = useState<ModelsStatusResponse | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [lastSyncTime, setLastSyncTime] = useState<string>('');
+
+  useEffect(() => {
+    try {
+      sessionStorage.setItem('medivision_active_tab', activeTab);
+    } catch {
+      // ignore
+    }
+  }, [activeTab]);
 
   const loadSystemState = useCallback(async (isManualRefresh = false) => {
     if (isManualRefresh) {
@@ -129,6 +145,7 @@ export function App() {
         onSelectTab={setActiveTab}
         backendOnline={isBackendOnline}
         dbStatus={dbStatus}
+        dbDetails={health?.database?.details}
       />
 
       {/* Main Content Area */}
@@ -153,12 +170,14 @@ export function App() {
             ) : activeTab === 'chest-xray' ? (
               <ChestXRayWorkbench
                 onBackToDashboard={() => setActiveTab('dashboard')}
+                onNavigateToHistory={() => setActiveTab('analysis-history')}
                 modelStatus={modelsStatus?.models?.cnn_chest_xray}
               />
             ) : (
               <ModuleWorkbench
                 tabId={activeTab}
                 onBackToDashboard={() => setActiveTab('dashboard')}
+                onSelectTab={(tab) => setActiveTab(tab)}
               />
             )}
 
